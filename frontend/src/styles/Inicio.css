@@ -1,0 +1,83 @@
+/* Estilos generales */
+.inicio-container {
+  padding-top: 65px;
+  background-color: #ecf9ff;
+}
+/* estilos carousel */
+.carousel {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.description-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 20px rgba(104, 104, 104);
+  z-index: 1; 
+  transition: transform 0.3s ease, z-index 0.3s ease; /* Agrega una animación de transformación y z-index */
+}
+
+.description-container:hover {
+  padding: 40px;
+  transform: translateY(-15px) scale(1.05); /* Eleva y escala la caja */
+  z-index: 2; /* Coloca la caja al frente */
+}
+
+
+/* Categorías */
+.categories-section {
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.category-card {
+  margin: 20px;
+}
+
+/* Estilos para pantallas pequeñas (max-width: 768px) */
+@media (max-width: 768px) {
+  .carousel-section p {
+    font-size: 14px;
+  }
+  .description {
+    width: 100%;
+  }
+
+  .description-container img.image {
+    width: 100%;
+  }
+  .description-container {
+    display: flex;
+    flex-direction: column;
+  }
+ 
+
+  .categories-section {
+    font-size: 18px;
+  }
+}
+
+/* Estilos para pantallas grandes (min-width: 769px) */
+@media (min-width: 769px) {
+  .description {
+    width: 50%;
+  }
+
+  .description-container img.image {
+    width: 50%;
+  }
+  .carousel-section p {
+    font-size: 20px;
+  }
+  .lugares-title h1 {
+    font-size: 30px;
+  }
+  .categories-section {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,78 @@
+.contGeneral {
+  padding-top: 80px;
+  background-color: #ecf9ff;
+}
+.Contenedor{
+  margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.hacer {
+  margin-top: 20px;
+  width: calc(80% - 10px);
+}
+
+/* Estilos para los eventos */
+.eventos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.evento {
+  width: 70%;
+  margin-bottom: 20px;
+  border: 1px solid #a09b9b;
+  padding: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Incluye el borde y el relleno en el ancho total */
+  cursor: pointer;
+}
+
+.evento h3 {
+  text-align: center;
+}
+
+.info h4 {
+  text-align: center;
+}
+
+.fecha {
+  display: flex;
+}
+
+.evento:hover {
+  background-color: rgba(184, 188, 192, 0.808);
+  transform: scale(1.02);
+}
+
+/* Estilos para pantallas pequeñas (máximo 768px) */
+@media (max-width: 768px) {
+  .evento-info {
+    display: block;
+    flex: 1; /* Permitir que la información ocupe el espacio disponible */
+  }
+
+  .evento img {
+    width: 100%;
+  }
+}
+
+/* Estilos para pantallas grandes (mínimo 769px) */
+@media (min-width: 769px) {
+  .evento-info {
+    display: flex;
+    flex: 1; /* Permitir que la información ocupe el espacio disponible */
+  }
+
+  .evento img {
+    width: 30%;
+    height: auto;
+  }
+}

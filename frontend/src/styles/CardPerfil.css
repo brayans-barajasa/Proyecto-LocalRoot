@@ -1,0 +1,87 @@
+.cardperfil {
+  margin-top: 65px;
+  background: #2cb5a0;
+  width: 13rem;
+  padding: 25px 20px;
+  border: 4px solid #7cdacc;
+  box-shadow: 0 6px 10px rgba(207, 212, 222, 1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 0;
+  right: 0; /* Coloca el componente en la esquina derecha */
+}
+
+
+
+.userSvg {
+  overflow: hidden;
+  object-fit: cover;
+  width: 5rem;
+  height: 5rem;
+  border: 4px solid #7cdacc;
+  border-radius: 999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.userSvg svg {
+  width: 2.5rem;
+  fill: currentColor;
+}
+
+.namePerfil p {
+  margin: 0;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.namePerfil span {
+  display: block;
+  font-weight: 200;
+  font-size: 16px;
+  cursor: pointer;
+}
+.namePerfil span:hover{
+ 
+  transform: translate(10px) scale(1.05);
+  z-index: 1; 
+  background-color:  rgb(124, 218, 204,0.5);
+  border: 2px solid #ffffff;
+
+}
+
+.CardCerrar:before {
+  content: " ";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: 20px 0;
+  background: #7cdacc;
+}
+
+.CardCerrar p  {
+  position: relative;
+  margin-right: 15px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+}
+
+.CardCerrar p:hover{
+  border: 2px solid #ffffff;
+
+  background-color:  rgb(124, 218, 204,0.5);
+  transform: translate(10px) scale(1.05);
+  z-index: 1; 
+}
