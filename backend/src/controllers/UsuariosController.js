@@ -69,23 +69,21 @@ async function findAll(req, res) {
   res.status(response.status).send(response);
 }
 
-async function findById(req, res) {
-  const id = req.params["id"];
-  const response = await FindOneUser(id);
+async function findById(req, res){
+  const usuario = req.params["username"];
+  const response = await FindOneUser(usuario);
   res.status(response.status).send(response);
 }
 
-async function findOneUsuario(req, res) {
-  const user = req.params["username"];
-  const response = await FindOneUsername(user);
+async function findOneUsuario(req, res){
+  const username = req.params["username"];
+  const response = await FindOneUsername(username);
   res.status(response.status).send(response);
-
-  
 }
 
 async function deleteUserData(req, res) {
-  const id = req.params["id"];
-  const response = await deleteUser(id);
+  const usuario = req.params["usuario"];
+  const response = await deleteUser(usuario);
   res.status(response.status).send(response);
 }
 
@@ -99,6 +97,7 @@ async function updateUserData(req, res) {
   const response = await updateUser(usuario, user);
   res.status(response.status).send(response);
 }
+
 async function login(req, res) {
   const params = req.body;
   const user = await FindOneUsername(params.usuario);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Constantes from "../../utils/Constantes";
@@ -12,6 +12,7 @@ function Login() {
     const [usuario, setUsuario] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [justifyActive, setJustifyActive] = useState('tab1');
 
@@ -27,7 +28,7 @@ function Login() {
     // consumo del login
     const inicioSesion = async (e) => {
         e.preventDefault();
-        const endPoin = Constantes.URL_BASE + '/usuarios/login';
+        const endPoin = Constantes.URL_BASE + '/usuarios/loginUser';
         const data = {
             usuario: usuario,
             password: password,
@@ -41,7 +42,7 @@ function Login() {
                 localStorage.setItem("user", resp.data.user);
                 localStorage.setItem("username", usuario);
                 navigate("/Inicio");
-                Swal.fire('Informacion!', localStorage.getItem("username") +" Bienvenido");
+                Swal.fire('Informacion!', localStorage.getItem("username") + " Bienvenido");
             })
             .catch((error) => {
                 console.log(error);
@@ -56,7 +57,13 @@ function Login() {
     // Consumo del registro
     const handleRegister = async (e) => {
         e.preventDefault();
-        const endPoint = Constantes.URL_BASE + '/usuarios/create';
+
+        if (password !== confirmPassword) {
+            Swal.fire('Información', 'La contraseña y la confirmación de contraseña no coinciden', 'error');
+            return;
+        }
+
+        const endPoint = Constantes.URL_BASE + '/usuarios/createUser';
 
         const data = {
             nombres: nombres,
@@ -69,21 +76,20 @@ function Login() {
             .post(endPoint, data)
             .then((resp) => {
                 console.log(resp);
-                Swal.fire('Informacion!', 'Usurio ' + usuario +' creado, inicia sesion')
-
+                Swal.fire('Información', 'Usuario ' + usuario + ' creado, inicia sesión');
                 navigate('/Inicio');
             })
             .catch((error) => {
                 console.log(error);
                 if (error.response.status == 400 || error.response.status === 404) {
-                    Swal.fire('Informacion!', error.response.data.message, 'error');
-                    
+                    Swal.fire('Información', error.response.data.message, 'error');
                 } else {
-                    Swal.fire('Informacion!', 'Ocurrio un error', 'error');
+                    Swal.fire('Información', 'Ocurrió un error', 'error');
                 }
             });
     };
-    
+
+
 
     return (
         <div className="container">
@@ -165,8 +171,18 @@ function Login() {
                         className="form-control mb-4"
                         placeholder="Contraseña"
                         type={showPassword ? 'text' : 'password'}
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+
+                    <input
+                        className="form-control mb-4"
+                        placeholder="Confirmar Contraseña"
+                        type={showPassword ? 'text' : 'password'}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+
                     <div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick={toggleShowPassword} />
                         <label className="form-check-label" htmlFor="flexCheckDefault">

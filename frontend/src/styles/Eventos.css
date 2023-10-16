@@ -52,6 +52,22 @@
   transform: scale(1.02);
 }
 
+.contener {
+  max-height: 4em; /* Aproximadamente 4 líneas de texto */
+  overflow: hidden; /* Oculta el contenido que excede la altura máxima */
+  position: relative; /* Importante para mostrar el botón "Ver más" */
+}
+
+.contener::after {
+  content: '.....'; /* Crea un pseudo-elemento para el botón "Ver más" */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(to bottom, transparent, white 60%); /* Efecto de fundido hacia abajo */
+  pointer-events: none; /* Permite hacer clic a través del pseudo-elemento */
+}
+
+
 /* Estilos para pantallas pequeñas (máximo 768px) */
 @media (max-width: 768px) {
   .evento-info {

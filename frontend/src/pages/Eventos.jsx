@@ -1,65 +1,45 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios"; 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import VerEvento from "../components/verEvento";
+import Constantes from "../../utils/Constantes";
 import "../styles/Eventos.css";
-import Emperatriz from '../assets/ImgEvento/LA EMPERATRIZ DE LA MENTIRA.png';
 
 const Eventos = () => {
-  const eventos = [
-    {
-      id: 1,
-      nombre: "LA EMPERATRIZ DE LA MENTIRA",
-      fecha: "septiembre 27",
-      hora: "7:30 pm",
-      lugar: "Cra. 42 #50A-12, Medellín",
-      descripcion: "Miércoles a sábado. Esta obra está construida a partir de ciertos pasajes de la novela de Fernando del Paso, la cual se basa tanto en la trágica historia del efímero...",
-      precio: "Gratis",
-      imagen: Emperatriz
-    },
-    {
-      id: 1,
-      nombre: "LA EMPERATRIZ DE LA MENTIRA",
-      fecha: "septiembre 27",
-      hora: "7:30 pm",
-      lugar: "Cra. 42 #50A-12, Medellín",
-      descripcion: "Miércoles a sábado. Esta obra está construida a partir de ciertos pasajes de la novela de Fernando del Paso, la cual se basa tanto en la trágica historia del efímero...",
-      precio: "1231",
-      imagen: Emperatriz
-    },
-    {
-      id: 1,
-      nombre: "LA EMPERATRIZ DE LA MENTIRA",
-      fecha: "septiembre 27",
-      hora: "7:30 pm",
-      lugar: "Cra. 42 #50A-12, Medellín",
-      descripcion: "Miércoles a sábado. Esta obra está construida a partir de ciertos pasajes de la novela de Fernando del Paso, la cual se basa tanto en la trágica historia del efímero...",
-      precio: "Gratis",
-      imagen: Emperatriz
-    },
-    {
-      id: 1,
-      nombre: "LA EMPERATRIZ DE LA MENTIRA",
-      fecha: "septiembre 27",
-      hora: "7:30 pm",
-      lugar: "Cra. 42 #50A-12, Medellín",
-      descripcion: "Miércoles a sábado. Esta obra está construida a partir de ciertos pasajes de la novela de Fernando del Paso, la cual se basa tanto en la trágica historia del efímero...",
-      precio: "Gratis",
-      imagen: Emperatriz
-    },
-    {
-      id: 1,
-      nombre: "LA EMPERATRIZ DE LA MENTIRA",
-      fecha: "septiembre 27",
-      hora: "7:30 pm",
-      lugar: "Cra. 42 #50A-12, Medellín",
-      descripcion: "Miércoles a sábado. Esta obra está construida a partir de ciertos pasajes de la novela de Fernando del Paso, la cual se basa tanto en la trágica historia del efímero...",
-      precio: "Gratis",
-      imagen: Emperatriz
-    },
+  const token = localStorage.getItem("token");
+  const [DataEvento, setData] = useState([]);
 
-  ];
+  const handleEvento = async () => {
 
+    const endPoin = Constantes.URL_BASE + '/eventos/listEvento';
+
+    await axios.get(endPoin,  {
+        headers: { Authorization: `bearer ${token}`},
+      })
+      .then((resp) => {
+        console.log(resp);
+        setData(resp.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status == 400) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else if (err.response.status == 401) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else {
+          Swal.fire("Información!", "Ocurrio un error!", "error");
+        }
+      });
+  };
+
+  useEffect(() => {
+    handleEvento();
+  }, []);
+  
+
+
+  
   return (
     <div className="contGeneral">
       <Header />
@@ -99,7 +79,7 @@ const Eventos = () => {
           </div>
         </nav>
         {/* llamar los eventos*/}
-        <VerEvento eventos={eventos} />
+        <VerEvento eventos={DataEvento} />
       </div>
 
       <Footer />

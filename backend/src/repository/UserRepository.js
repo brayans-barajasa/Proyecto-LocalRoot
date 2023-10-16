@@ -42,10 +42,10 @@ module.exports.FindAllUser = async (sort) =>{
     });
 }
 
-module.exports.FindOneUser = async (id) =>{
+module.exports.FindOneUser = async (usuario) =>{
     return new Promise((resolve, reject) => {
         UserModel
-        .findById({_id: id})
+        .findOne({usuario: usuario})
         .then((resp)=>{
             Response.status = 200;
             Response.message = "Registros Encontrados";
@@ -74,7 +74,7 @@ module.exports.FindOneUsername = async (usuario) =>{
         })
         .catch((err) =>{
             console.log("error:", err)
-            Response.status = 400;
+            Response.status = 500;
             Response.message = "Ocurrio un error en el servidor";
             Response.result = err;
             reject(Response);
@@ -82,10 +82,10 @@ module.exports.FindOneUsername = async (usuario) =>{
     });
 }
 
-module.exports.deleteUser = async (id) =>{
+module.exports.deleteUser = async (usuario) =>{
     return new Promise((resolve, reject) => {
         UserModel
-        .findByIdAndDelete(id)
+        .findByIdAndDelete(usuario)
         .then((resp)=>{
             Response.status = 200;
             Response.message = "Registro Eliminado correctamente";
@@ -103,10 +103,10 @@ module.exports.deleteUser = async (id) =>{
 }
 
 
-module.exports.updateUser = async (id, user) =>{
+module.exports.updateUser = async (usuario, user) =>{
     return new Promise((resolve, reject) => {
         UserModel
-        .findOneAndUpdate({_id : id}, {nombres: user.nombres, apellidos: user.apellidos})
+        .findOneAndUpdate({usuario : usuario}, {nombres: user.nombres, apellidos: user.apellidos})
         .then((resp)=>{
             Response.status = 200;
             Response.message = "Registro Actualizado correctamente";

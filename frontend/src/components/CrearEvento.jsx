@@ -5,10 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import Constantes from "../../utils/Constantes";
-import '../styles/CrearEvento.css'; 
+import '../styles/CrearEvento.css';
 
 function CrearEvento() {
   const [showEventModal, setShowEventModal] = useState(false);
+  const usuario = localStorage.getItem("username");
+  
   const [nombreEvento, setNombreEvento] = useState("");
   const [fechaInicioEvento, setFechaInicioEvento] = useState("");
   const [horaInicioEvento, setHoraInicioEvento] = useState("");
@@ -16,11 +18,11 @@ function CrearEvento() {
   const [horaFinEvento, setHoraFinEvento] = useState("");
   const [ubicacionEvento, setUbicacionEvento] = useState("");
   const [descripcionEvento, setDescripcionEvento] = useState("");
-  const [categoriaEvento, setCategoriaEvento] = useState(""); 
-  const [entradaGratis, setEntradaGratis] = useState(false);
+  const [categoriaEvento, setCategoriaEvento] = useState("");
   const [costoEntrada, setCostoEntrada] = useState("");
   const [imagenEvento, setImagenEvento] = useState(null);
   const [contactoEvento, setContactoEvento] = useState("");
+  const [entradaGratis, setEntradaGratis] = useState(false); // Nuevo estado para entrada gratuita
 
   const mostrarModalEvento = () => {
     setShowEventModal(true);
@@ -29,12 +31,12 @@ function CrearEvento() {
   const cerrarModalEvento = () => {
     setShowEventModal(false);
   };
-
-  const subirImagen = (archivo) => {
+    const subirImagen = (archivo) => {
     setImagenEvento(archivo);
   };
 
-  const crearEvento = () => {
+
+  const crearEvento = async (e) => {
     if (
       nombreEvento.trim() === "" ||
       fechaInicioEvento.trim() === "" ||
@@ -43,29 +45,44 @@ function CrearEvento() {
       horaFinEvento.trim() === "" ||
       ubicacionEvento.trim() === "" ||
       descripcionEvento.trim() === "" ||
-      categoriaEvento.trim() === "" || // Validación para asegurarse de que se haya elegido una categoría
-      (!entradaGratis && costoEntrada.trim() === "") ||
+      categoriaEvento.trim() === "" ||
+      (!entradaGratis && (costoEntrada.trim() === "")) || // Validación para asegurarse de que se haya elegido una categoría
       contactoEvento.trim() === ""
     ) {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else {
-      // Todos los campos están llenos, procede a enviar los datos al servidor
+      e.preventDefault();
+      const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
+
       const fechaHoraInicioEvento = `${fechaInicioEvento} ${horaInicioEvento}`;
       const fechaHoraFinEvento = `${fechaFinEvento} ${horaFinEvento}`;
       const datosEvento = {
+        usuario: usuario,
         nombre: nombreEvento,
         fechaHoraInicio: fechaHoraInicioEvento,
         fechaHoraFin: fechaHoraFinEvento,
         ubicacion: ubicacionEvento,
         descripcion: descripcionEvento,
         categoria: categoriaEvento,
-        entradaGratis: entradaGratis,
         costoEntrada: entradaGratis ? "Gratis" : costoEntrada,
-        imagen: imagenEvento,
         contacto: contactoEvento,
       };
 
-      // Realiza la solicitud POST al servidor aquí y maneja las respuestas o errores
+      axios
+        .post(endPoint, datosEvento)
+        .then((resp) => {
+          console.log(resp);
+          cerrarModalEvento();
+          Swal.fire('Informacion!', 'el evento ' + nombreEvento + ' ha sido creado');
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 400 || error.response.status === 404) {
+            Swal.fire('Informacion!', error.response.data.message, 'error');
+          } else {
+            Swal.fire('Informacion!', 'Ocurrió un error', 'error');
+          }
+        });
     }
   };
 
@@ -189,7 +206,7 @@ function CrearEvento() {
             <Form.Label>Imagen o banner del evento</Form.Label>
             <Form.Control
               type="file"
-              onChange={(e) => subirImagen(e.target.files[0])}
+              onChange={(e) => setImagenEvento(e.target.files[0])}
             />
           </Form.Group>
         </Modal.Body>

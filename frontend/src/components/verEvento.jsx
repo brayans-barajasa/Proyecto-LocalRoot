@@ -1,22 +1,25 @@
 import React from "react";
+import Emperatriz from '../assets/ImgEvento/LA EMPERATRIZ DE LA MENTIRA.png';
 
 const VerEventos = ({ eventos }) => {
   return (
     <div className="eventos">
-      {eventos.map((evento) => (
-        <div key={evento.id} className="evento">
-          <h3>{evento.nombre}</h3>
+      {eventos.map((DataEvento) => (
+        <div key={DataEvento._id} className="evento">
+          <h3>{DataEvento.nombre}</h3>
           <div className="evento-info">
             <div className="info">
               <div className="fecha">
-                <p>Fecha: {evento.fecha}</p>
-                <p>Hora: {evento.hora}</p>
+                <p>Fecha inicio: {DataEvento.fechaHoraInicio}</p>
+                <p>Fecha fin: {DataEvento.fechaHoraFin}</p>
               </div>
-              <p>Lugar: {evento.lugar}</p>
-              <p>Descripción: {evento.descripcion}</p>
-              <h4>Precio: {evento.precio}</h4>
+              <p>Ubicación: {DataEvento.ubicacion}</p>
+              <div className="contener">
+                <p>{DataEvento.descripcion}</p>
+              </div>
+              <h4>Precio: {DataEvento.costoEntrada}</h4>
             </div>
-            <img src={evento.imagen} alt={evento.nombre} />
+            <img src={Emperatriz} alt={DataEvento.nombre} />
           </div>
         </div>
       ))}
