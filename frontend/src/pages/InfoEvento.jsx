@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Constantes from "../../utils/Constantes";
-
+import "../styles/InfoEvento.css"
 
 const InfoEvento = () => {
     const { id } = useParams();
@@ -21,7 +21,7 @@ const InfoEvento = () => {
             headers: { Authorization: `bearer ${token}` },
         })
             .then((resp) => {
-                setDataEvento(resp.data.result);    
+                setDataEvento(resp.data.result);
             })
             .catch((err) => {
                 console.log(err);
@@ -41,19 +41,32 @@ const InfoEvento = () => {
 
 
     return (
-        <div>
+        <div className='contGeneral'>
             <Header />
-            <div className="container">
+            <div className="Contenedor">
 
-                <h3>nombre: {DataEvento.nombre}</h3>
-                <h3>fechaHora Inicio: {DataEvento.fechaHoraInicio}</h3>
-                <h3>fechaHora fin: {DataEvento.fechaHoraFin}</h3>
-                <h3>ubicacion: {DataEvento.ubicacion}</h3>
-                <h3>descripcion: {DataEvento.descripcion}</h3>
-                <h3>categoria: {DataEvento.categoria}</h3>
-                <h3>costo Entrada: {DataEvento.costoEntrada}</h3>
-                <h3>contacto: {DataEvento.contacto}</h3>
-                <img src={DataEvento.imageEvento} alt="" />
+                <h2 className='nombre'>{DataEvento.nombre}</h2>
+                <div className="infoGeneral">
+                    <img src={DataEvento.imageEvento} alt="" />
+
+                    <div className="informacion">
+                        <div className="horario">
+                            <p><b>Fecha y Hora Inicio:</b> <br />{DataEvento.fechaHoraInicio}</p>
+                            <p> <b> fecha Hora y fin:</b> <br />{DataEvento.fechaHoraFin} </p>
+                            <p><b>contacto:</b><br /> {DataEvento.contacto}</p>
+                            <p><b>organizador:</b><br /> {DataEvento.organizador}</p>
+                        </div>
+                        <div className='datos' >
+                            <p><b>ubicacion:</b> <br /> {DataEvento.ubicacion}</p>
+                            <p><b>categoria:</b> <br /> {DataEvento.categoria}</p>
+                            <p><b>costo Entrada: </b> <br />{DataEvento.costoEntrada}</p>
+                        </div>
+                    </div>
+
+                </div>
+                <p className='descrip'>{DataEvento.descripcion}</p>
+
+
 
             </div>
 

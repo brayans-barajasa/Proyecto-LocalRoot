@@ -14,14 +14,6 @@ import axios from 'axios';
 import Constantes from "../../utils/Constantes"
 import Swal from 'sweetalert2';
 
-const lugaresData = [
-    {
-        nombre: "Parque Norte",
-        descripcion: "Un parque de diversiones con atracciones para toda la familia.",
-        imagen: img,
-    },
-];
-
 
 
 const perfil = {
@@ -33,6 +25,8 @@ const perfil = {
 const Perfil = () => {
     const token = localStorage.getItem("token");
     const [DataEvento, setDataEvento] = useState([]);
+    const [DataLugar, setDataLugar] = useState([]);
+
     const [Datauser, setDatauser] = useState([]);
     const usuario = localStorage.getItem("username")
 
@@ -60,7 +54,7 @@ const Perfil = () => {
 
     useEffect(() => {
         handleOneUser();
-    }, []);
+    });
 
     //consumo para ver los eventos creados por el usuario
     async function handleEvento() {
@@ -73,7 +67,6 @@ const Perfil = () => {
         })
             .then((resp) => {
                 setDataEvento(resp.data.result.filter(elemento => elemento.usuario === usuario));
-                console.log(resp)
             })
             .catch((err) => {
                 console.log(err);
@@ -86,13 +79,40 @@ const Perfil = () => {
                 }
             });
     }
-
-
-
-
     useEffect(() => {
         handleEvento();
-    }, []);
+    });
+
+    //consumo para ver los lugares creados por el usuario
+
+    async function handleLugar() {
+
+
+        const endPoin = Constantes.URL_BASE + '/lugares/listlugares';
+
+        await axios.get(endPoin, {
+            headers: { Authorization: `bearer ${token}` },
+        })
+            .then((resp) => {
+                setDataLugar(resp.data.result.filter(elemento => elemento.usuario === usuario));
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.response.status == 400) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else if (err.response.status == 401) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else {
+                    Swal.fire("Información!", "Ocurrio un error!", "error");
+                }
+            });
+    }
+    useEffect(() => {
+        handleLugar();
+    });
+
+
+
 
 
     return (
@@ -109,17 +129,24 @@ const Perfil = () => {
 
                         </div>
                         <h6 className="usuario-perfil">Email: {Datauser.email}</h6>
-                        <h6 className="usuario-perfil">Eventos creados: {DataEvento.length}</h6>
-                        <p className="bio-perfil">{perfil.descripcion}</p>
 
+                        <div className="nombre">
+                            <h6 className="usuario-perfil">Eventos creados: {DataEvento.length}</h6>
+
+                            <h6 className="usuario-perfil">Eventos guardados: {DataEvento.length}</h6>
+                        </div>
+                        <div className="nombre">
+
+                            <h6 className="usuario-perfil">Lugares creados: {DataLugar.length}</h6>
+                            <h6 className="usuario-perfil">Lugares guardados: {DataLugar.length}</h6>
+                        </div>
+                        <p className="bio-perfil">{perfil.descripcion}</p>
                     </div>
                 </div>
 
                 <div className="crearEvento">
                     <CrearEvento />
                     <CrearLugar />
-
-
                 </div>
 
                 <div className="secciones">
@@ -129,7 +156,7 @@ const Perfil = () => {
                         className="mb-3"
                         fill
                     >
-                        <Tab eventKey="home" title="Eventos creados">
+                        <Tab eventKey="evento creado" title="Eventos creados">
                             {DataEvento.length > 0 ? (
                                 <div>
                                     <h4>Estos son tus eventos creados</h4>
@@ -143,28 +170,28 @@ const Perfil = () => {
                         </Tab>
 
 
-                        <Tab eventKey="evento" title="Eventos guardados">
+                        <Tab eventKey="evento guardado" title="Eventos guardados">
                             <h4>Estos son tus eventos guardados</h4>
                         </Tab>
 
-                        <Tab eventKey="lugar" title="Lugares Creados">
+                        <Tab eventKey="lugar creado" title="Lugares Creados">
+                            {DataLugar.length > 0 ? (
+                                <div>
+                                    <h4>Estos son tus lugares creados</h4>
+                                    <Lugares lugaresData={DataLugar} />
+                                </div>
+                            ) : (
+                                <div>
+                                    <h4>NO tienes eventos creados</h4>
+                                </div>
+                            )}
+                        </Tab>
+                        <Tab eventKey="lugar guardado" title="Lugares guardados">
                             <h4>Estos tus lugares guardados</h4>
 
-
-                            <Lugares lugaresData={lugaresData} />
                         </Tab>
-                        <Tab eventKey="lugar" title="Lugares guardados">
-                            <h4>Estos tus lugares guardados</h4>
-
-
-                            <Lugares lugaresData={lugaresData} />
-                        </Tab>
-
                     </Tabs>
                 </div>
-
-
-
             </div>
             <Footer />
         </div>

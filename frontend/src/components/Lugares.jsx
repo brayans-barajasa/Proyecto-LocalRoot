@@ -1,19 +1,20 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import "../styles/LugaresTuristicos.css"
 
-const Lugar = ({ lugar }) => (
-  <div className="lugar">
-    <img src={lugar.imagen} alt={lugar.nombre} />
-    <h3>{lugar.nombre}</h3>
-    <p>{lugar.descripcion}</p>
-  </div>
-);
+const Lugares = ({ lugaresData }) => {
+  return (
+    <div className="lugares-container">
+      {lugaresData.map((lugar) => (
+        <div key={lugar._id} className="lugar">
+          <img src={lugar.fotosLugar} alt="" />
+          <h3>{lugar.nombreLugar}</h3>
+          <p >{lugar.descripcionLugar}</p>
+          <Link to={`/lugar/${lugar._id}`}>Ver Detalles</Link>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-const Lugares = ({ lugaresData }) => (
-  <div className="lugares-container">
-    {lugaresData.map((lugar, index) => (
-      <Lugar key={index} lugar={lugar} />
-    ))}
-  </div>
-);
-
-export default Lugares; 
+export default Lugares;

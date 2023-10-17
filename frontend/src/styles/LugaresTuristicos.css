@@ -2,7 +2,7 @@
   padding-top: 100px;
   background-color: #ecf9ff;
 }
-.Contenedor{
+.lugar  {
   margin: 0 5%;
   display: flex;
   flex-direction: column;
@@ -14,14 +14,14 @@
 }
 .descubre{
   margin-top: 20px;
-  width: calc(90% - 10px);
+  width: calc(95% - 10px);
 }
 .lugares-container {
-  width: calc(80% - 10px);
+  width: calc(90% - 10px);
   margin: 0 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  grid-gap: 30px;
+  grid-gap: 10px;
 }
 
 .lugar {
@@ -32,6 +32,16 @@
 
 
 }
+.lugar p {
+  max-height: 3em; /* Establece la altura máxima equivalente a 3 líneas de texto */
+  overflow: hidden; /* Oculta el contenido que excede la altura máxima */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos al texto recortado */
+}
+
+
+
+
+
 
 .lugar img {
   width: 100%;

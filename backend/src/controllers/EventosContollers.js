@@ -23,6 +23,7 @@ async function create(req, res) {
   evento.costoEntrada = params.costoEntrada;
   evento.contacto = params.contacto;
   evento.imageEvento = params.imageEvento;
+  evento.organizador = params.organizador;
 
   const response = await CreateEvento(evento);
   res.status(response.status).send(response);

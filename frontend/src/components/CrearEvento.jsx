@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -11,9 +10,9 @@ import '../styles/CrearEvento.css';
 function CrearEvento() {
   const [showEventModal, setShowEventModal] = useState(false);
   const usuario = localStorage.getItem("username");
-  const navigate = useNavigate();
 
   const [nombreEvento, setNombreEvento] = useState("");
+  const [organizador, setorganizador] = useState("");
   const [fechaInicioEvento, setFechaInicioEvento] = useState("");
   const [horaInicioEvento, setHoraInicioEvento] = useState("");
   const [fechaFinEvento, setFechaFinEvento] = useState("");
@@ -47,7 +46,9 @@ function CrearEvento() {
       categoriaEvento.trim() === "" ||
       (!entradaGratis && costoEntrada.trim() === "") ||
       contactoEvento.trim() === "" ||
-      imageEvento.trim() === ""
+      imageEvento.trim() === ""||
+      organizador.trim() === ""
+      
     ) {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else {
@@ -66,6 +67,7 @@ function CrearEvento() {
         costoEntrada: entradaGratis ? "Gratis" : costoEntrada,
         contacto: contactoEvento,
         imageEvento: imageEvento,
+        organizador: organizador,
       };
       const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
 
@@ -107,6 +109,15 @@ function CrearEvento() {
               placeholder="Nombre del evento"
               value={nombreEvento}
               onChange={(e) => setNombreEvento(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Nombre del Organizador</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Nombre del organizador"
+              value={organizador}
+              onChange={(e) => setorganizador(e.target.value)}
             />
           </Form.Group>
           <div className="d-flex">
@@ -219,7 +230,7 @@ function CrearEvento() {
           <img
             id="image-preview"
             src={imageEvento} // Mostrar la imagen desde el enlace proporcionado
-            alt="Preview"
+            alt="Vista previa"
             style={{ maxWidth: "50%" }}
           />
         </Modal.Body>

@@ -1,114 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import img from "../assets/Lugares/pueblitos.png";
-import "../styles/LugaresTuristicos.css";
-import Lugares from "../components/Lugares"; 
-
-const lugaresData = [
-  {
-    nombre: "Parque Explora",
-    descripcion: "Un museo interactivo y acuario donde puedes explorar la ciencia y la biodiversidad.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo de Antioquia",
-    descripcion: "El museo más antiguo de Medellín, que alberga una colección de arte y esculturas.",
-    imagen: img,
-  },
-  {
-    nombre: "Jardín Botánico",
-    descripcion: "Un hermoso lugar con una gran variedad de plantas y un mariposario.",
-    imagen: img,
-  },
-  {
-    nombre: "Pueblito Paisa",
-    descripcion: "Una réplica de un pueblo típico antioqueño con una vista panorámica de la ciudad.",
-    imagen: img,
-  },
-  {
-    nombre: "Cerro Nutibara",
-    descripcion: "Una colina con un mirador, senderos naturales y la escultura de Pueblito Paisa.",
-    imagen: img,
-  },
-  {
-    nombre: "Parque Arví",
-    descripcion: "Un parque natural con senderos, actividades al aire libre y un teleférico.",
-    imagen: img,
-  },
-  {
-    nombre: "Plaza Botero",
-    descripcion: "Una plaza con esculturas gigantes de Fernando Botero, uno de los artistas más famosos de Colombia.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo El Castillo",
-    descripcion: "Una mansión histórica que alberga una colección de arte europeo y jardines hermosos.",
-    imagen: img,
-  },
-  {
-    nombre: "Metrocable",
-    descripcion: "Un sistema de teleférico que conecta las comunas de Medellín con vistas panorámicas impresionantes.",
-    imagen: img,
-  },
-  {
-    nombre: "Parque Lleras",
-    descripcion: "Una zona de entretenimiento con restaurantes, bares y vida nocturna animada.",
-    imagen: img,
-  },
-  {
-    nombre: "Casa de la Memoria",
-    descripcion: "Un espacio cultural que aborda la historia de Medellín y los derechos humanos.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo de Arte Moderno de Medellín",
-    descripcion: "Un museo dedicado al arte contemporáneo con exposiciones rotativas.",
-    imagen: img,
-  },
-  {
-    nombre: "Parque de los Deseos",
-    descripcion: "Un parque con un planetario, un teatro al aire libre y espacios para actividades recreativas.",
-    imagen: img,
-  },
-  {
-    nombre: "Catedral Basílica Metropolitana",
-    descripcion: "La catedral más importante de Medellín con una arquitectura impresionante.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo del Agua",
-    descripcion: "Un museo interactivo sobre el agua y la importancia de su conservación.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo del Oro Medellín",
-    descripcion: "Una sucursal del Museo del Oro de Bogotá con exhibiciones de objetos de oro precolombinos.",
-    imagen: img,
-  },
-  {
-    nombre: "Biblioteca España",
-    descripcion: "Una biblioteca pública con una arquitectura única y una vista panorámica de la ciudad.",
-    imagen: img,
-  },
-  {
-    nombre: "Jardín Circunvalar",
-    descripcion: "Un parque lineal con senderos naturales y vistas panorámicas de Medellín.",
-    imagen: img,
-  },
-  {
-    nombre: "Museo Cementerio San Pedro",
-    descripcion: "Un museo ubicado en un cementerio histórico con esculturas y arte funerario.",
-    imagen: img,
-  },
-  {
-    nombre: "Parque Norte",
-    descripcion: "Un parque de diversiones con atracciones para toda la familia.",
-    imagen: img,
-  },
-];
+import Lugares from "../components/Lugares";  // Corregido el nombre de la importación
+import Constantes from "../../utils/Constantes";
+import axios from "axios";
+import Swal from 'sweetalert2';
 
 const LugaresTuristicos = () => {
+  const token = localStorage.getItem("token");
+  const [DataLugares, setDataLugares] = useState([]);
+  const [search, setSearch] = useState('');
+  const [lugaresFiltrados, setLugaresFiltrados] = useState([]);
+  const [noResultados, setNoResultados] = useState(false);
+
+  const obtenerLugares = async () => {
+    const endPoint = Constantes.URL_BASE + '/lugares/listlugares';
+
+    try {
+      const resp = await axios.get(endPoint, {
+        headers: { Authorization: `Bearer ${token}` },  // Corregido 'bearer' a 'Bearer'
+      });
+      console.log(resp);
+      setDataLugares(resp.data.result);
+    } catch (err) {
+      console.log(err);
+      if (err.response && err.response.status === 400) {
+        Swal.fire("Información!", err.response.data.message, "error");
+      } else if (err.response && err.response.status === 401) {
+        Swal.fire("Información!", err.response.data.message, "error");
+      } else {
+        Swal.fire("Información!", "Ocurrió un error!", "error");
+      }
+    }
+  };
+
+  useEffect(() => {
+    obtenerLugares();
+  }, []);
+
+  const manejarBusqueda = (e) => {
+    const terminoBusqueda = e.target.value.toLowerCase();
+    setSearch(terminoBusqueda);
+
+    // Filtrar los lugares que coincidan con el término de búsqueda
+    const lugaresFiltrados = DataLugares.filter((lugar) =>
+      lugar.nombreLugar.toLowerCase().includes(terminoBusqueda)
+    );
+
+    setLugaresFiltrados(lugaresFiltrados);
+
+    // Verificar si no hay resultados
+    if (lugaresFiltrados.length === 0) {
+      setNoResultados(true);
+    } else {
+      setNoResultados(false);
+    }
+  };
+
   return (
     <div className="contGeneral">
       <Header />
@@ -124,11 +72,48 @@ const LugaresTuristicos = () => {
             rincón!
           </p>
         </div>
-        {/* {componente lugares} */}
-        <Lugares lugaresData={lugaresData} />
+
+        <nav className="navbar navbar-expand-lg bg-body-terciary">
+          <div className="container-fluid">
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarScroll">
+              <form className="d-flex" role="search">
+                <input
+                  className="form-control me-2"
+                  type="search"
+                  placeholder="Buscar por nombre de lugar"  // Corregido el placeholder
+                  aria-label="Search"
+                  value={search}
+                  onChange={manejarBusqueda}
+                />
+                <button className="btn btn-outline-success" type="submit">
+                  Buscar
+                </button>
+              </form>
+              <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{ '--bs-scroll-height': '100px' }}>
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Lista
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" href="#">Mes</a></li>
+                    <li><a className="dropdown-item" href="#">Día</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        {noResultados ? (
+          <p className="no-resultados-mensaje">No hay lugares que coincidan con la búsqueda.</p>
+        ) : (
+          <Lugares lugaresData={search.length ? lugaresFiltrados : DataLugares} />
+        )}
       </div>
       <Footer />
-    </div>
+    </div>  
   );
 };
 

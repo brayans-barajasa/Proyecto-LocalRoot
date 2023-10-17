@@ -1,6 +1,7 @@
 const express = require("express")
 const UsersController = require("../controllers/UsuariosController");
 const EventosController = require("../controllers/EventosContollers");
+const LugaresController = require("../controllers/LugaresControllers");
 
 const api = express.Router();
 // Routes para usuarios
@@ -22,4 +23,11 @@ api.delete("/eventos/deleteEvento/:id", EventosController.deleteEventoData);
 api.put("/eventos/updateEvento/:usuario", EventosController.updateEventoData);
 
 
+// Routes para crear lugares
+api.post("/lugares/createLugares", LugaresController.create);
+api.get("/lugares/listlugares", LugaresController.findAll);
+api.get("/lugares/findbyidlugares/:id", LugaresController.findById);
+api.get("/lugares/findLugaresname/:userlugar", LugaresController.findOneLugares);
+api.delete("/lugares/deletelugares/:id", LugaresController.deleteLugarData);
+api.put("/lugares/updateLugares/:usuario", LugaresController.updateLugarData);
 module.exports = api;

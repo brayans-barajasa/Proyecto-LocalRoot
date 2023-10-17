@@ -5,17 +5,21 @@ import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import Constantes from "../../utils/Constantes";
+import '../styles/CrearEvento.css';
 
-function CrearLugar() {
+function CrearEvento() {
   const [showPlaceModal, setShowPlaceModal] = useState(false);
+
+  const usuario = localStorage.getItem("username");
+
   const [nombreLugar, setNombreLugar] = useState("");
   const [categoriaLugar, setCategoriaLugar] = useState("Elegir");
   const [direccionLugar, setDireccionLugar] = useState("");
   const [horarioLugar, setHorarioLugar] = useState("");
   const [descripcionLugar, setDescripcionLugar] = useState("");
   const [atraccionesLugar, setAtraccionesLugar] = useState("");
-  const [fotosLugar, setFotosLugar] = useState([]);
-  const [contacto, setContacto] = useState("");
+  const [fotosLugar, setFotosLugar] = useState("");
+  const [contactoLugar, setContactoLugar] = useState("");
 
   const mostrarModalLugar = () => {
     setShowPlaceModal(true);
@@ -25,46 +29,63 @@ function CrearLugar() {
     setShowPlaceModal(false);
   };
 
-  const manejarSubidaFotos = (archivos) => {
-    setFotosLugar([...fotosLugar, ...archivos]);
-  };
-
-  const crearLugar = () => {
+  const crearLugar = async (e) => {
     if (
       nombreLugar.trim() === "" ||
-      categoriaLugar.trim() === "" ||
+      categoriaLugar === "Elegir" ||
       direccionLugar.trim() === "" ||
       horarioLugar.trim() === "" ||
       descripcionLugar.trim() === "" ||
       atraccionesLugar.trim() === "" ||
-      fotosLugar.length === 0 ||
-      contacto.trim() === ""
+      contactoLugar.trim() === "" ||
+      fotosLugar.trim() === ""
     ) {
-      Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
+      Swal.fire('Error', 'Por favor, completa todos los campos del lugar.', 'error');
     } else {
-      
+      e.preventDefault();
+  
       const datosLugar = {
-        nombre: nombreLugar,
-        categoria: categoriaLugar,
-        direccion: direccionLugar,
-        horario: horarioLugar,
-        descripcion: descripcionLugar,
-        atracciones: atraccionesLugar,
-        fotos: fotosLugar,
-        contacto: contacto,
+        usuario: usuario,
+        nombreLugar: nombreLugar,
+        categoriaLugar: categoriaLugar,
+        direccionLugar: direccionLugar,
+        horarioLugar: horarioLugar,
+        descripcionLugar: descripcionLugar,
+        atraccionesLugar: atraccionesLugar,
+        contactoLugar: contactoLugar, // Corregido el nombre de la propiedad
+        fotosLugar: fotosLugar,
       };
-
-      // Realiza la solicitud POST al servidor aquí y maneja las respuestas o errores
+      const endPoint = Constantes.URL_BASE + '/lugares/createLugares';
+  
+      axios
+        .post(endPoint, datosLugar)
+        .then((resp) => {
+          console.log(resp);
+          cerrarModalLugar();
+          Swal.fire('Información', 'Lugar creado', 'success');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response && (error.response.status === 400 || error.response.status === 404)) {
+            Swal.fire('Error', error.response.data.message, 'error');
+          } else {
+            Swal.fire('Error', 'Ocurrió un error', 'error');
+          }
+        });
     }
   };
+  
 
   return (
     <div>
-      <Button variant="outline-primary" onClick={mostrarModalLugar}>Crear lugar</Button>{' '}
+      <Button className="crear-evento-button" variant="outline-primary" onClick={mostrarModalLugar}>
+        Crear lugar
+      </Button>{' '}
 
-      <Modal show={showPlaceModal} onHide={cerrarModalLugar}>
+      <Modal className="custom-modal" show={showPlaceModal} onHide={cerrarModalLugar} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Crear Lugar</Modal.Title>
+          <Modal.Title className="modal-title">Crear Lugar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
@@ -82,7 +103,7 @@ function CrearLugar() {
               value={categoriaLugar}
               onChange={(e) => setCategoriaLugar(e.target.value)}
             >
-              <option value="">Elegir</option>
+              <option value="Elegir">Elegir</option>
               <option value="Categoria 1">Categoria 1</option>
               <option value="Categoria 2">Categoria 2</option>
               <option value="Categoria 3">Categoria 3</option>
@@ -91,19 +112,19 @@ function CrearLugar() {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Dirección</Form.Label>
+            <Form.Label>Dirección del lugar</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Dirección"
+              placeholder="Dirección del lugar"
               value={direccionLugar}
               onChange={(e) => setDireccionLugar(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Horario de funcionamiento</Form.Label>
+            <Form.Label>Horario del lugar</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Horario de funcionamiento"
+              placeholder="Horario del lugar"
               value={horarioLugar}
               onChange={(e) => setHorarioLugar(e.target.value)}
             />
@@ -118,31 +139,38 @@ function CrearLugar() {
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Atracciones y servicios</Form.Label>
+            <Form.Label>Atracciones del lugar</Form.Label>
             <Form.Control
               as="textarea"
-              placeholder="Atracciones y servicios"
+              placeholder="Atracciones del lugar"
               value={atraccionesLugar}
               onChange={(e) => setAtraccionesLugar(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Fotos y multimedia</Form.Label>
-            <Form.Control
-              type="file"
-              multiple
-              onChange={(e) => manejarSubidaFotos(e.target.files)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Contacto</Form.Label>
+            <Form.Label>Contacto del lugar</Form.Label>
             <Form.Control
               type="text"
               placeholder="Información de contacto"
-              value={contacto}
-              onChange={(e) => setContacto(e.target.value)}
+              value={contactoLugar}
+              onChange={(e) => setContactoLugar(e.target.value)}
             />
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Enlaces de fotos del lugar (separados por comas)</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enlaces de fotos"
+              value={fotosLugar}
+              onChange={(e) => setFotosLugar(e.target.value)}
+            />
+          </Form.Group>
+          <img
+            id="image-preview"
+            src={fotosLugar} // Mostrar la imagen desde el enlace proporcionado
+            alt="Vista previa"
+            style={{ maxWidth: "50%" }}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={crearLugar}>
@@ -157,4 +185,4 @@ function CrearLugar() {
   );
 }
 
-export default CrearLugar;
+export default CrearEvento;
