@@ -22,6 +22,7 @@ async function create(req, res) {
   evento.categoria = params.categoria;
   evento.costoEntrada = params.costoEntrada;
   evento.contacto = params.contacto;
+  evento.imageEvento = params.imageEvento;
 
   const response = await CreateEvento(evento);
   res.status(response.status).send(response);
@@ -40,8 +41,8 @@ async function findAll(req, res) {
 
 
 async function findById(req, res) {
-  const usuario = req.params["userevento"];
-  const response = await FindOneEvento(usuario);
+  const id = req.params["id"];
+  const response = await FindOneEvento(id);
   res.status(response.status).send(response);
 }
 

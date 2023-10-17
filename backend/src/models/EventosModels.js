@@ -11,6 +11,7 @@ const EventosSchema = schema({
     categoria: String,
     costoEntrada: String,
     contacto: String,
+    imageEvento: String
 });
 
 

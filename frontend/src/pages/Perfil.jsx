@@ -25,7 +25,6 @@ const lugaresData = [
 
 
 const perfil = {
-    nombre: "Brayan Barajas",
     foto: fotoPerfil,
     descripcion: "Bienvenidos a nuestra plataforma en línea. Explora, descubre y disfruta de una experiencia única. Tu destino virtual está a un clic de distancia.",
 
@@ -74,7 +73,7 @@ const Perfil = () => {
         })
             .then((resp) => {
                 setDataEvento(resp.data.result.filter(elemento => elemento.usuario === usuario));
-                
+                console.log(resp)
             })
             .catch((err) => {
                 console.log(err);
@@ -104,9 +103,13 @@ const Perfil = () => {
                 <div className="encabezado-perfil">
                     <img src={perfil.foto} alt="Foto de perfil" />
                     <div className="descrip-pefil">
-                        <h4 className="nombre-perfil"> Nombre: {Datauser.nombres}</h4>
-                        <h4 className="usuario-perfil">Usuario: {usuario}</h4>
-                        <h4 className="usuario-perfil">Email: {Datauser.email}</h4>
+                        <div className="nombre">
+                            <h6 className="nombre-perfil"> Nombre: {Datauser.nombres}</h6>
+                            <h6 className="usuario-perfil">Usuario: {usuario}</h6>
+
+                        </div>
+                        <h6 className="usuario-perfil">Email: {Datauser.email}</h6>
+                        <h6 className="usuario-perfil">Eventos creados: {DataEvento.length}</h6>
                         <p className="bio-perfil">{perfil.descripcion}</p>
 
                     </div>
@@ -127,11 +130,18 @@ const Perfil = () => {
                         fill
                     >
                         <Tab eventKey="home" title="Eventos creados">
-
-                            <h4> estos son tus eventos creados</h4>
-                            <VerEvento eventos={DataEvento} />
-
+                            {DataEvento.length > 0 ? (
+                                <div>
+                                    <h4>Estos son tus eventos creados</h4>
+                                    <VerEvento eventos={DataEvento} />
+                                </div>
+                            ) : (
+                                <div>
+                                    <h4>NO tienes eventos creados</h4>
+                                </div>
+                            )}
                         </Tab>
+
 
                         <Tab eventKey="evento" title="Eventos guardados">
                             <h4>Estos son tus eventos guardados</h4>

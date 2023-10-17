@@ -19,6 +19,21 @@
   padding-top: 10px; 
 }
 
+.descrip-pefil h6 {
+  font-weight: bold; 
+  color: #355a6e;
+  text-align: center; 
+  background-color: #f0f0f0;
+  padding: 4px 40px; 
+  border-radius: 8px;
+  margin: 10px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+.nombre{
+  display: flex;
+  justify-content: center;
+
+}
 .secciones h4 {
   font-size: 28px; 
   font-weight: bold; 

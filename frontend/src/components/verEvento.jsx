@@ -1,5 +1,5 @@
-import React from "react";
-import Emperatriz from '../assets/ImgEvento/LA EMPERATRIZ DE LA MENTIRA.png';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const VerEventos = ({ eventos }) => {
   return (
@@ -18,8 +18,10 @@ const VerEventos = ({ eventos }) => {
                 <p>{DataEvento.descripcion}</p>
               </div>
               <h4>Precio: {DataEvento.costoEntrada}</h4>
+              {/* Enlace al detalle del evento usando el 'id' del evento */}
+              <Link to={`/evento/${DataEvento._id}`}>Ver Detalles</Link>
             </div>
-            <img src={Emperatriz} alt={DataEvento.nombre} />
+            <img src={DataEvento.imageEvento} alt={DataEvento.nombre} />
           </div>
         </div>
       ))}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +11,8 @@ import '../styles/CrearEvento.css';
 function CrearEvento() {
   const [showEventModal, setShowEventModal] = useState(false);
   const usuario = localStorage.getItem("username");
-  
+  const navigate = useNavigate();
+
   const [nombreEvento, setNombreEvento] = useState("");
   const [fechaInicioEvento, setFechaInicioEvento] = useState("");
   const [horaInicioEvento, setHoraInicioEvento] = useState("");
@@ -20,9 +22,9 @@ function CrearEvento() {
   const [descripcionEvento, setDescripcionEvento] = useState("");
   const [categoriaEvento, setCategoriaEvento] = useState("");
   const [costoEntrada, setCostoEntrada] = useState("");
-  const [imagenEvento, setImagenEvento] = useState(null);
+  const [imageEvento, setimageEvento] = useState("");
   const [contactoEvento, setContactoEvento] = useState("");
-  const [entradaGratis, setEntradaGratis] = useState(false); // Nuevo estado para entrada gratuita
+  const [entradaGratis, setEntradaGratis] = useState(false);
 
   const mostrarModalEvento = () => {
     setShowEventModal(true);
@@ -30,9 +32,6 @@ function CrearEvento() {
 
   const cerrarModalEvento = () => {
     setShowEventModal(false);
-  };
-    const subirImagen = (archivo) => {
-    setImagenEvento(archivo);
   };
 
 
@@ -46,13 +45,13 @@ function CrearEvento() {
       ubicacionEvento.trim() === "" ||
       descripcionEvento.trim() === "" ||
       categoriaEvento.trim() === "" ||
-      (!entradaGratis && (costoEntrada.trim() === "")) || // Validación para asegurarse de que se haya elegido una categoría
-      contactoEvento.trim() === ""
+      (!entradaGratis && costoEntrada.trim() === "") ||
+      contactoEvento.trim() === "" ||
+      imageEvento.trim() === ""
     ) {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else {
       e.preventDefault();
-      const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
 
       const fechaHoraInicioEvento = `${fechaInicioEvento} ${horaInicioEvento}`;
       const fechaHoraFinEvento = `${fechaFinEvento} ${horaFinEvento}`;
@@ -66,21 +65,25 @@ function CrearEvento() {
         categoria: categoriaEvento,
         costoEntrada: entradaGratis ? "Gratis" : costoEntrada,
         contacto: contactoEvento,
+        imageEvento: imageEvento,
       };
+      const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
 
       axios
         .post(endPoint, datosEvento)
         .then((resp) => {
           console.log(resp);
           cerrarModalEvento();
-          Swal.fire('Informacion!', 'el evento ' + nombreEvento + ' ha sido creado');
+          Swal.fire('Información', 'Evento creado', 'success');
+          window.location.reload();
+
         })
         .catch((error) => {
-          console.log(error);
-          if (error.response.status === 400 || error.response.status === 404) {
-            Swal.fire('Informacion!', error.response.data.message, 'error');
+          console.error(error);
+          if (error.response && (error.response.status === 400 || error.response.status === 404)) {
+            Swal.fire('Error', error.response.data.message, 'error');
           } else {
-            Swal.fire('Informacion!', 'Ocurrió un error', 'error');
+            Swal.fire('Error', 'Ocurrió un error', 'error');
           }
         });
     }
@@ -203,12 +206,22 @@ function CrearEvento() {
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Imagen o banner del evento</Form.Label>
+            <Form.Label>Enlace de la imagen del evento</Form.Label>
             <Form.Control
-              type="file"
-              onChange={(e) => setImagenEvento(e.target.files[0])}
+              type="text"
+              placeholder="Enlace de la imagen"
+              value={imageEvento}
+              onChange={(e) => setimageEvento(e.target.value)}
             />
           </Form.Group>
+
+
+          <img
+            id="image-preview"
+            src={imageEvento} // Mostrar la imagen desde el enlace proporcionado
+            alt="Preview"
+            style={{ maxWidth: "50%" }}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={crearEvento}>

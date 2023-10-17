@@ -9,6 +9,8 @@ import SobreMedellin from './pages/SobreMedellin'
 import PreguntasFrecuentes from './pages/Preguntas'
 import Terminos from './pages/Terminos'
 import Perfil from './pages/Perfil'
+import InfoEvento from "./pages/InfoEvento"
+
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
       <Route path='/PreguntasFrecuentes' element={<PreguntasFrecuentes />}/>
       <Route path='/Terminos' element={<Terminos />}/>
       <Route path='/Perfil' element={<Perfil />}/>
+      <Route path='/evento/:id' element={<InfoEvento />} />
+
       
     </Routes>
   )

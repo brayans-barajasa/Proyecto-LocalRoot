@@ -40,9 +40,9 @@ module.exports.FindAllEvento = async (sort) => {
       });
   });
 };
-module.exports.FindOneEvento = async (usuario) => {
+module.exports.FindOneEvento = async (id) => {
   return new Promise((resolve, reject) => {
-    UserModel.findById({ usuario: usuario })
+    UserModel.findById({ _id: id })
       .then((resp) => {
         Response.status = 200;
         Response.message = "Registros del evento encontrados";

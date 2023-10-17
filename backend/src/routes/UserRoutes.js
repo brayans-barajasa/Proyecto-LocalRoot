@@ -16,7 +16,7 @@ api.put("/usuarios/updateUser/:usuario", UsersController.updateUserData);
 // Routes para crear eventos
 api.post("/eventos/createEvento", EventosController.create);
 api.get("/eventos/listEvento", EventosController.findAll);
-api.get("/eventos/findbyidEvento/:userevento", EventosController.findById);
+api.get("/eventos/findbyidEvento/:id", EventosController.findById);
 api.get("/eventos/findEventoname/:userevento", EventosController.findOneEvento);
 api.delete("/eventos/deleteEvento/:id", EventosController.deleteEventoData);
 api.put("/eventos/updateEvento/:usuario", EventosController.updateEventoData);
