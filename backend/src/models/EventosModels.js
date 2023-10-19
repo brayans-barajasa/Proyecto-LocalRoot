@@ -8,7 +8,7 @@ const EventosSchema = schema({
     fechaHoraFin: String,
     ubicacion: String,
     descripcion: String,
-    categoria: String,
+    categoria: [],
     costoEntrada: String,
     contacto: String,
     imageEvento: String,

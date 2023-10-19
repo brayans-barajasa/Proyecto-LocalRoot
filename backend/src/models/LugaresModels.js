@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 const EventosSchema = schema({
     usuario: String,
     nombreLugar: String,
-    categoriaLugar: String,
+    categoriaLugar: [],
     direccionLugar: String,
     horarioLugar: String,
     descripcionLugar: String,

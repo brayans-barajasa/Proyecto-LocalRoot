@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Constantes from "../../utils/Constantes";
-import Modal from 'react-modal';
 import RestablecerPassword from "./RestablecerPassword";
 
 function Login() {

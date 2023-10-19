@@ -3,12 +3,12 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Swal from 'sweetalert2';
-import axios from 'axios'; // Asegúrate de importar axios
+import axios from 'axios';
 import Constantes from "../../utils/Constantes";
 
 function RestablecerPassword() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [usuario, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -21,25 +21,29 @@ function RestablecerPassword() {
   };
 
   const handleSavePassword = () => {
-    if (userName === "" || password === "" || confirmPassword === "") {
+    if (usuario === "" || password === "" || confirmPassword === "") {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else if (password === confirmPassword) {
-      const endPoint = `${Constantes.URL_BASE}/usuarios/update/${userName}`;
+      const endPoint = `${Constantes.URL_BASE}/usuarios/updateUser/${usuario}`;
 
       const Data = {
-        usuario: userName,
+        usuario: usuario,
         password: password,
       };
 
-     
+
       axios.put(endPoint, Data)
         .then((resp) => {
           console.log(resp.data);
           Swal.fire('Información', 'Contraseña actualizada con éxito', 'success');
         })
         .catch((error) => {
-          console.error(error);
-          Swal.fire('Error', 'No se pudo restablecer la contraseña', 'error');
+          console.log(error);
+          if (error.response.status == 400 || error.response.status === 404) {
+            Swal.fire('Informacion!', error.response.data.message, 'error');
+        } else {
+            Swal.fire('Informacion!', 'Ocurrio un error', 'error');
+        }
         });
     } else {
       Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
@@ -59,7 +63,7 @@ function RestablecerPassword() {
             <Form.Control
               type="text"
               placeholder="Nombre de usuario"
-              value={userName}
+              value={usuario}
               onChange={(e) => setUserName(e.target.value)}
             />
           </Form.Group>

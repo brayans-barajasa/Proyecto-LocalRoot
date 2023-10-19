@@ -12,14 +12,14 @@ function CrearEvento() {
   const usuario = localStorage.getItem("username");
 
   const [nombreEvento, setNombreEvento] = useState("");
-  const [organizador, setorganizador] = useState("");
+  const [organizador, setOrganizador] = useState("");
   const [fechaInicioEvento, setFechaInicioEvento] = useState("");
   const [horaInicioEvento, setHoraInicioEvento] = useState("");
   const [fechaFinEvento, setFechaFinEvento] = useState("");
   const [horaFinEvento, setHoraFinEvento] = useState("");
   const [ubicacionEvento, setUbicacionEvento] = useState("");
   const [descripcionEvento, setDescripcionEvento] = useState("");
-  const [categoriaEvento, setCategoriaEvento] = useState("");
+  const [categoriaEvento, setCategoriaEvento] = useState([]);
   const [costoEntrada, setCostoEntrada] = useState("");
   const [imageEvento, setimageEvento] = useState("");
   const [contactoEvento, setContactoEvento] = useState("");
@@ -33,6 +33,15 @@ function CrearEvento() {
     setShowEventModal(false);
   };
 
+  const handleCategoriaCheckbox = (isChecked, category) => {
+    if (isChecked) {
+      // Agregar la categoría a la lista
+      setCategoriaEvento([...categoriaEvento, category]);
+    } else {
+      // Quitar la categoría de la lista
+      setCategoriaEvento(categoriaEvento.filter((c) => c !== category));
+    }
+  };
 
   const crearEvento = async (e) => {
     if (
@@ -43,12 +52,11 @@ function CrearEvento() {
       horaFinEvento.trim() === "" ||
       ubicacionEvento.trim() === "" ||
       descripcionEvento.trim() === "" ||
-      categoriaEvento.trim() === "" ||
+      categoriaEvento.length === 0 ||
       (!entradaGratis && costoEntrada.trim() === "") ||
       contactoEvento.trim() === "" ||
-      imageEvento.trim() === ""||
+      imageEvento.trim() === "" ||
       organizador.trim() === ""
-      
     ) {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else {
@@ -78,7 +86,6 @@ function CrearEvento() {
           cerrarModalEvento();
           Swal.fire('Información', 'Evento creado', 'success');
           window.location.reload();
-
         })
         .catch((error) => {
           console.error(error);
@@ -117,7 +124,7 @@ function CrearEvento() {
               type="text"
               placeholder="Nombre del organizador"
               value={organizador}
-              onChange={(e) => setorganizador(e.target.value)}
+              onChange={(e) => setOrganizador(e.target.value)}
             />
           </Form.Group>
           <div className="d-flex">
@@ -176,17 +183,53 @@ function CrearEvento() {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Categoría del evento</Form.Label>
-            <Form.Select
-              value={categoriaEvento}
-              onChange={(e) => setCategoriaEvento(e.target.value)}
-            >
-              <option value="">Elegir</option>
-              <option value="Categoria 1">Categoria 1</option>
-              <option value="Categoria 2">Categoria 2</option>
-              <option value="Categoria 3">Categoria 3</option>
-              <option value="Categoria 4">Categoria 4</option>
-              <option value="Categoria 5">Categoria 5</option>
-            </Form.Select>
+            <div className="row">
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria1"
+                  label="Categoria 1"
+                  checked={categoriaEvento.includes("Categoria 1")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 1")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria2"
+                  label="Categoria 2"
+                  checked={categoriaEvento.includes("Categoria 2")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 2")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria3"
+                  label="Categoria 3"
+                  checked={categoriaEvento.includes("Categoria 3")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 3")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria4"
+                  label="Categoria 4"
+                  checked={categoriaEvento.includes("Categoria 4")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 4")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria5"
+                  label="Categoria 5"
+                  checked={categoriaEvento.includes("Categoria 5")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 5")}
+                />
+              </div>
+            </div>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
@@ -225,8 +268,6 @@ function CrearEvento() {
               onChange={(e) => setimageEvento(e.target.value)}
             />
           </Form.Group>
-
-
           <img
             id="image-preview"
             src={imageEvento} // Mostrar la imagen desde el enlace proporcionado

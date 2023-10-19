@@ -13,13 +13,14 @@ function CrearEvento() {
   const usuario = localStorage.getItem("username");
 
   const [nombreLugar, setNombreLugar] = useState("");
-  const [categoriaLugar, setCategoriaLugar] = useState("Elegir");
   const [direccionLugar, setDireccionLugar] = useState("");
   const [horarioLugar, setHorarioLugar] = useState("");
   const [descripcionLugar, setDescripcionLugar] = useState("");
   const [atraccionesLugar, setAtraccionesLugar] = useState("");
   const [fotosLugar, setFotosLugar] = useState("");
   const [contactoLugar, setContactoLugar] = useState("");
+  const [categoriaLugar, setCategoriaLugar] = useState([]);
+
 
   const mostrarModalLugar = () => {
     setShowPlaceModal(true);
@@ -28,11 +29,19 @@ function CrearEvento() {
   const cerrarModalLugar = () => {
     setShowPlaceModal(false);
   };
-
+  const handleCategoriaCheckbox = (isChecked, category) => {
+    if (isChecked) {
+      // Agregar la categoría a la lista
+      setCategoriaLugar([...categoriaLugar, category]);
+    } else {
+      // Quitar la categoría de la lista
+      setCategoriaLugar(categoriaLugar.filter((c) => c !== category));
+    }
+  };
   const crearLugar = async (e) => {
     if (
       nombreLugar.trim() === "" ||
-      categoriaLugar === "Elegir" ||
+      categoriaLugar.length === 0 ||
       direccionLugar.trim() === "" ||
       horarioLugar.trim() === "" ||
       descripcionLugar.trim() === "" ||
@@ -98,18 +107,54 @@ function CrearEvento() {
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Categoría del lugar</Form.Label>
-            <Form.Select
-              value={categoriaLugar}
-              onChange={(e) => setCategoriaLugar(e.target.value)}
-            >
-              <option value="Elegir">Elegir</option>
-              <option value="Categoria 1">Categoria 1</option>
-              <option value="Categoria 2">Categoria 2</option>
-              <option value="Categoria 3">Categoria 3</option>
-              <option value="Categoria 4">Categoria 4</option>
-              <option value="Categoria 5">Categoria 5</option>
-            </Form.Select>
+            <Form.Label>Categoría del Lugar</Form.Label>
+            <div className="row">
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria1"
+                  label="Categoria 1"
+                  checked={categoriaLugar.includes("Categoria 1")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 1")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria2"
+                  label="Categoria 2"
+                  checked={categoriaLugar.includes("Categoria 2")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 2")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria3"
+                  label="Categoria 3"
+                  checked={categoriaLugar.includes("Categoria 3")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 3")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria4"
+                  label="Categoria 4"
+                  checked={categoriaLugar.includes("Categoria 4")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 4")}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Check
+                  type="checkbox"
+                  id="categoria5"
+                  label="Categoria 5"
+                  checked={categoriaLugar.includes("Categoria 5")}
+                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 5")}
+                />
+              </div>
+            </div>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Dirección del lugar</Form.Label>

@@ -44,6 +44,9 @@ const InfoEvento = () => {
         <div className='contGeneral'>
             <Header />
             <div className="Contenedor">
+                <h2>
+                    Encuentra grandes eventos y disfrutalos
+                </h2>
 
                 <h2 className='nombre'>{DataEvento.nombre}</h2>
                 <div className="infoGeneral">
@@ -58,7 +61,15 @@ const InfoEvento = () => {
                         </div>
                         <div className='datos' >
                             <p><b>ubicacion:</b> <br /> {DataEvento.ubicacion}</p>
-                            <p><b>categoria:</b> <br /> {DataEvento.categoria}</p>
+                            <p>
+                                <b>Categoría:</b>
+                                <ul>
+                                    {DataEvento.categoria?.map((categoria, index) => (
+                                        <li key={index}>{categoria}</li>
+                                    ))}
+                                </ul>
+                            </p>
+
                             <p><b>costo Entrada: </b> <br />{DataEvento.costoEntrada}</p>
                         </div>
                     </div>

@@ -11,32 +11,41 @@ const bcrypt = require("bcrypt-nodejs");
 
 async function create(req, res) {
   const params = req.body;
-
   const user = new UserModel();
 
-  if (params.usuario == "" || params.usuario == undefined) {
-    res.status(404).send({ message: "El Usuario es Requerido" });
+  if (params.nombres == "" || params.nombres == undefined) {
+    res.status(400).send({ message: "El nombre es Requerido" });
     return;
   }
-  if (params.nombres == "" || params.nombres == undefined) {
-    res.status(404).send({ message: "El nombre es Requerido" });
+  if (params.usuario == "" || params.usuario == undefined) {
+    res.status(400).json({ message: "El Usuario es Requerido" });
     return;
   }
   if (params.email == "" || params.email == undefined) {
-    res.status(404).send({ message: "El Email es Requerido" });
+    res.status(400).send({ message: "El Email es Requerido" });
+    return;
+  }
+  function esCorreoElectronicoValido(correo) {
+    const patronCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return patronCorreo.test(correo);
+  }
+
+  if (!esCorreoElectronicoValido(params.email)) {
+    res.status(400).send({ message: "El Email ingresado no es válido" });
     return;
   }
 
   if (params.password == "" || params.password == undefined) {
-    res.status(404).send({ message: "El password es Requerido" });
+    res.status(400).send({ message: "La contraseña es Requerida" });
     return;
   }
-  
 
   // comprobar si hay existencia de usaurio o email
   const userExiste = await FindOneUsername(params.usuario);
   if (userExiste.result) {
-    res.status(404).send({ message: "El usuario ya existe, ingresa uno diferente" });
+    res
+      .status(400)
+      .send({ message: "El usuario ya existe, ingresa uno diferente" });
     return;
   }
 
@@ -69,13 +78,13 @@ async function findAll(req, res) {
   res.status(response.status).send(response);
 }
 
-async function findById(req, res){
+async function findById(req, res) {
   const usuario = req.params["username"];
   const response = await FindOneUser(usuario);
   res.status(response.status).send(response);
 }
 
-async function findOneUsuario(req, res){
+async function findOneUsuario(req, res) {
   const username = req.params["username"];
   const response = await FindOneUsername(username);
   res.status(response.status).send(response);
@@ -88,14 +97,24 @@ async function deleteUserData(req, res) {
 }
 
 async function updateUserData(req, res) {
-  const usuario = req.params["usuario"];
-  const body = req.body;
+  const params = req.body;
+  const userExiste = await FindOneUsername(params.usuario);
+  if (userExiste.result) {
+    const usuario = req.params["usuario"];
+    const body = req.body;
 
-  let user = new UserModel();
-  user.password = body.password;
-
-  const response = await updateUser(usuario, user);
-  res.status(response.status).send(response);
+    let user = new UserModel();
+    user.password = body.password;
+    bcrypt.hash(user.password, null, null, async function (err, hash) {
+      if (hash) {
+        user.password = hash;
+        const response = await updateUser(usuario, user);
+        res.status(response.status).send(response);
+      }
+    });
+  } else {
+    res.status(400).send({ message: "Usuario  Invalido" });
+  }
 }
 
 async function login(req, res) {

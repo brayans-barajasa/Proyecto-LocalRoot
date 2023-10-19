@@ -41,6 +41,9 @@ const InfoLugares = () => {
         <div className='contGeneral'>
             <Header />
             <div className="Contenedor">
+            <h1>
+                    Encuentra grandes lugares y disfrutalos
+                </h1>
                 <h2 className='nombre'>{DataLugar.nombreLugar}</h2>
                 <div className="infoGeneral">
                     <img src={DataLugar.fotosLugar} alt="" />
@@ -52,7 +55,15 @@ const InfoLugares = () => {
                         </div>
                         <div className='datos'>
                             <p><b>Ubicación:</b> {DataLugar.direccionLugar}</p>
-                            <p><b>Categoría:</b> {DataLugar.categoriaLugar}</p>
+
+                            <p>
+                                <b>Categoría:</b>
+                                <ul>
+                                    {DataLugar.categoriaLugar?.map((categoria, index) => (
+                                        <li key={index}>{categoria}</li>
+                                    ))}
+                                </ul>
+                            </p>
                             <p><b>Atracciones:</b> {DataLugar.atraccionesLugar}</p>
                         </div>
                     </div>

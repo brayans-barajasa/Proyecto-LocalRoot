@@ -106,7 +106,7 @@ module.exports.deleteUser = async (usuario) =>{
 module.exports.updateUser = async (usuario, user) =>{
     return new Promise((resolve, reject) => {
         UserModel
-        .findOneAndUpdate({usuario : usuario}, {nombres: user.nombres, apellidos: user.apellidos})
+        .findOneAndUpdate({usuario : usuario}, {password: user.password })
         .then((resp)=>{
             Response.status = 200;
             Response.message = "Registro Actualizado correctamente";
