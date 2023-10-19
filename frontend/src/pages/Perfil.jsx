@@ -2,25 +2,19 @@ import { useState, useEffect } from "react";
 import "../styles/perfil.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import fotoPerfil from "../assets/compo/user.svg"
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import VerEvento from "../components/verEvento";
 import Lugares from "../components/Lugares";
-import img from "../assets/Lugares/pueblitos.png";
 import CrearEvento from "../components/CrearEvento"
 import CrearLugar from "../components/CrearLugar"
 import axios from 'axios';
 import Constantes from "../../utils/Constantes"
 import Swal from 'sweetalert2';
+import EditPerfil from "../components/editPerfil";
 
 
 
-const perfil = {
-    foto: fotoPerfil,
-    descripcion: "Bienvenidos a nuestra plataforma en línea. Explora, descubre y disfruta de una experiencia única. Tu destino virtual está a un clic de distancia.",
-
-};
 
 const Perfil = () => {
     const token = localStorage.getItem("token");
@@ -121,7 +115,18 @@ const Perfil = () => {
             <div className="contenedor-perfil">
 
                 <div className="encabezado-perfil">
-                    <img src={perfil.foto} alt="Foto de perfil" />
+                    <div>
+                        <img src={Datauser.foto} alt="Foto de perfil" />
+                       
+                       
+                       
+                       
+                        <EditPerfil />
+
+                    </div>
+
+
+
                     <div className="descrip-pefil">
                         <div className="nombre">
                             <h6 className="nombre-perfil"> Nombre: {Datauser.nombres}</h6>
@@ -140,7 +145,6 @@ const Perfil = () => {
                             <h6 className="usuario-perfil">Lugares creados: {DataLugar.length}</h6>
                             <h6 className="usuario-perfil">Lugares guardados: {DataLugar.length}</h6>
                         </div>
-                        <p className="bio-perfil">{perfil.descripcion}</p>
                     </div>
                 </div>
 

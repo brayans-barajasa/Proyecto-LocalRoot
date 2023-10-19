@@ -5,7 +5,8 @@ const UsuariosSchema = schema({
     nombres: String,
     email: String,
     usuario: String,
-    password: String
+    password: String,
+    foto: String
 });
 
 module.exports = mongoose.model('usuarios_collection', UsuariosSchema);

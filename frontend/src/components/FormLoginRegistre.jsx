@@ -10,6 +10,7 @@ function Login() {
     const [nombres, setNombres] = useState('');
     const [usuario, setUsuario] = useState('');
     const [email, setEmail] = useState('');
+    const [foto, setfoto] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -69,6 +70,7 @@ function Login() {
             usuario: usuario,
             email: email,
             password: password,
+            foto: foto,
         };
 
         await axios

@@ -61,6 +61,7 @@ async function create(req, res) {
       user.nombres = params.nombres;
       user.email = params.email;
       user.usuario = params.usuario;
+      user.foto = params.foto;
       user.password = hash;
 
       const response = await CreateUser(user);
@@ -108,6 +109,7 @@ async function updateUserData(req, res) {
     bcrypt.hash(user.password, null, null, async function (err, hash) {
       if (hash) {
         user.password = hash;
+        user.foto = body.foto;
         const response = await updateUser(usuario, user);
         res.status(response.status).send(response);
       }
