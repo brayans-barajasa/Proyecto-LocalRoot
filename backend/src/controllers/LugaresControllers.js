@@ -49,8 +49,8 @@ async function findOneLugares(req, res) {
 }
 
 async function deleteLugarData(req, res) {
-  const usuario = req.params["usuario"];
-  const response = await deleteLugar(usuario);
+  const id = req.params["id"];
+  const response = await deleteLugar(id);
   res.status(response.status).send(response);
 }
 

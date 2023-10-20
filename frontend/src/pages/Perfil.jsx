@@ -174,8 +174,8 @@ const Perfil = () => {
                         </Tab>
 
 
-                        <Tab eventKey="evento guardado" title="Eventos guardados">
-                            <h4>Estos son tus eventos guardados</h4>
+                        <Tab eventKey="evento favoritos" title="Eventos favoritos">
+                            <h4>Estos son tus eventos favoritos</h4>
                         </Tab>
 
                         <Tab eventKey="lugar creado" title="Lugares Creados">
@@ -190,8 +190,8 @@ const Perfil = () => {
                                 </div>
                             )}
                         </Tab>
-                        <Tab eventKey="lugar guardado" title="Lugares guardados">
-                            <h4>Estos tus lugares guardados</h4>
+                        <Tab eventKey="lugar favoritos" title="Lugares favoritos">
+                            <h4>Estos tus lugares favoritos</h4>
 
                         </Tab>
                     </Tabs>

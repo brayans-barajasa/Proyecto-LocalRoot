@@ -4,6 +4,9 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Constantes from "../../utils/Constantes";
 import RestablecerPassword from "./RestablecerPassword";
+import '../styles/Login.css';
+
+
 
 function Login() {
     const navigate = useNavigate();
@@ -118,7 +121,7 @@ function Login() {
                 <div className={`tab-pane ${justifyActive === 'tab1' ? 'active' : ''}`}>
                     <input
                         className="form-control mb-4"
-                        placeholder="Ingresar tu Gmail"
+                        placeholder="Ingresar tu Usuario"
                         type="email"
                         value={usuario}
                         onChange={(e) => setUsuario(e.target.value)}

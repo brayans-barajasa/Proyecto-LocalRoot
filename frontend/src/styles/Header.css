@@ -1,10 +1,14 @@
+
+
 /* Estilo para el enlace de navegación */
 .navLink {
   position: relative;
   cursor: pointer;
   text-decoration: none; /* Para quitar el subrayado predeterminado de los enlaces */
 }
-
+.color {
+  background: #4d4ddf !important;
+}
 /* Estilo para la línea azul cuando el mouse pasa sobre el enlace de navegación */
 .navLink::after {
   content: "";

@@ -54,8 +54,8 @@ async function findOneEvento(req, res) {
 }
 
 async function deleteEventoData(req, res) {
-  const usuario = req.params["usuario"];
-  const response = await deleteEvento(usuario);
+  const id = req.params["id"];
+  const response = await deleteEvento(id);
   res.status(response.status).send(response);
 }
 

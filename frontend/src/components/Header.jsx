@@ -56,7 +56,7 @@ function Header() {
   return (
     <div className='fixed-top'>
       {['md'].map((expand) => (
-        <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3">
+        <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 color">
           <Container fluid>
             <div className='Logo' href="#Inicio" onClick={redirigirInicio}>
               <img src={Logo} alt="" />

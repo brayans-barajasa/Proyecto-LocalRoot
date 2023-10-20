@@ -36,6 +36,8 @@ function RestablecerPassword() {
         .then((resp) => {
           console.log(resp.data);
           Swal.fire('Información', 'Contraseña actualizada con éxito', 'success');
+          window.location.reload();
+
         })
         .catch((error) => {
           console.log(error);

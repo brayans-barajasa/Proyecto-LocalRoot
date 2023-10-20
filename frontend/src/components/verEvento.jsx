@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 const VerEventos = ({ eventos }) => {
+  const eventosReverso = eventos.slice().reverse();
+  
   return (
     <div className="eventos">
-      {eventos.map((DataEvento) => (
+      {eventosReverso.map((DataEvento) => (
         <div key={DataEvento._id} className="evento">
           <h3>{DataEvento.nombre}</h3>
           <div className="evento-info">

@@ -13,16 +13,18 @@ const LugaresTuristicos = () => {
   const [lugaresFiltrados, setLugaresFiltrados] = useState([]);
   const [noResultados, setNoResultados] = useState(false);
 
-  const obtenerLugares = async () => {
-    const endPoint = Constantes.URL_BASE + '/lugares/listlugares';
+const obtenerLugares = () => {
+  const endPoint = Constantes.URL_BASE + '/lugares/listlugares';
 
-    try {
-      const resp = await axios.get(endPoint, {
-        headers: { Authorization: `Bearer ${token}` },  // Corregido 'bearer' a 'Bearer'
-      });
+  axios
+    .get(endPoint, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((resp) => {
       console.log(resp);
       setDataLugares(resp.data.result);
-    } catch (err) {
+    })
+    .catch((err) => {
       console.log(err);
       if (err.response && err.response.status === 400) {
         Swal.fire("Información!", err.response.data.message, "error");
@@ -31,8 +33,9 @@ const LugaresTuristicos = () => {
       } else {
         Swal.fire("Información!", "Ocurrió un error!", "error");
       }
-    }
-  };
+    });
+};
+
 
   useEffect(() => {
     obtenerLugares();
