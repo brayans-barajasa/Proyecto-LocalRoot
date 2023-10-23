@@ -55,13 +55,20 @@ async function deleteLugarData(req, res) {
 }
 
 async function updateLugarData(req, res) {
-  const usuario = req.params["usuario"];
+  const id = req.params["id"];
   const body = req.body;
 
-  let evento = new UserModel();
-  evento.usuario = body.usuario;
+  let lugares = new LugaresoModel();
+  lugares.nombreLugar = body.nombreLugar;
+  lugares.categoriaLugar = body.categoriaLugar;
+  lugares.direccionLugar = body.direccionLugar;
+  lugares.horarioLugar = body.horarioLugar;
+  lugares.descripcionLugar = body.descripcionLugar;
+  lugares.atraccionesLugar = body.atraccionesLugar;
+  lugares.contactoLugar = body.contactoLugar;
+  lugares.fotosLugar = body.fotosLugar;
 
-  const response = await updateLugar(usuario, evento);
+  const response = await updateLugar(id, lugares);
   res.status(response.status).send(response);
 }
 

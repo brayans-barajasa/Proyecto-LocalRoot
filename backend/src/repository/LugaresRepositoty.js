@@ -49,7 +49,7 @@ module.exports.FindOneLugar = async (id) => {
         Response.result = resp;
         resolve(Response);
       })
-      .catch((err) => { 
+      .catch((err) => {
         console.log("error:", err);
         Response.status = 500;
         Response.message = "Ocurrio un error en el servidor";
@@ -97,11 +97,20 @@ module.exports.deleteLugar = async (id) => {
   });
 };
 
-module.exports.updateLugar = async (usuario, user) => {
+module.exports.updateLugar = async (id, lugar) => {
   return new Promise((resolve, reject) => {
     UserModel.findOneAndUpdate(
-      { usuario: usuario },
-      { nombres: user.nombres, apellidos: user.apellidos }
+      { _id: id },
+      {
+        nombreLugar: lugar.nombreLugar,
+        categoriaLugar: lugar.categoriaLugar,
+        direccionLugar: lugar.direccionLugar,
+        horarioLugar: lugar.horarioLugar,
+        descripcionLugar: lugar.descripcionLugar,
+        atraccionesLugar: lugar.atraccionesLugar,
+        contactoLugar: lugar.contactoLugar,
+        fotosLugar: lugar.fotosLugar,
+      }
     )
       .then((resp) => {
         Response.status = 200;

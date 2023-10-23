@@ -29,5 +29,5 @@ api.get("/lugares/listlugares", LugaresController.findAll);
 api.get("/lugares/findbyidlugares/:id", LugaresController.findById);
 api.get("/lugares/findLugaresname/:userlugar", LugaresController.findOneLugares);
 api.delete("/lugares/deletelugares/:id", LugaresController.deleteLugarData);
-api.put("/lugares/updateLugares/:usuario", LugaresController.updateLugarData);
+api.put("/lugares/updateLugares/:id", LugaresController.updateLugarData);
 module.exports = api;
