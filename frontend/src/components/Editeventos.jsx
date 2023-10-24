@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -7,9 +8,9 @@ import axios from 'axios';
 import Constantes from "../../utils/Constantes";
 import '../styles/CrearEvento.css';
 
-function CrearEvento() {
+function EditEvento() {
   const [showEventModal, setShowEventModal] = useState(false);
-  const usuario = localStorage.getItem("username");
+  const { id } = useParams();
 
   const [nombreEvento, setNombreEvento] = useState("");
   const [organizador, setOrganizador] = useState("");
@@ -24,6 +25,47 @@ function CrearEvento() {
   const [imageEvento, setimageEvento] = useState("");
   const [contactoEvento, setContactoEvento] = useState("");
   const [entradaGratis, setEntradaGratis] = useState(false);
+
+  useEffect(() => {
+    handleOneEvento();
+  }, [id]);
+
+  const handleOneEvento = () => {
+    const endPoint = `${Constantes.URL_BASE}/eventos/findbyidEvento/${id}`;
+
+    axios.get(endPoint)
+      .then((resp) => {
+        const eventoData = resp.data.result;
+        setNombreEvento(eventoData.nombre);
+        setOrganizador(eventoData.organizador);       
+        setFechaInicioEvento(eventoData.fechaInicioEvento)
+        setHoraInicioEvento(eventoData.horaInicioEvento)
+        setFechaFinEvento(eventoData.fechaFinEvento)
+        setHoraFinEvento(eventoData.horaFinEvento)
+        setUbicacionEvento(eventoData.ubicacion);
+        setDescripcionEvento(eventoData.descripcion);
+        setCategoriaEvento(eventoData.categoria);
+        if (eventoData.costoEntrada === "Gratis") {
+          setEntradaGratis(true);
+          setCostoEntrada("");
+        } else {
+          setEntradaGratis(false);
+          setCostoEntrada(eventoData.costoEntrada);
+        }
+        setContactoEvento(eventoData.contacto);
+        setimageEvento(eventoData.imageEvento);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 400) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else if (err.response.status === 401) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else {
+          Swal.fire("Información!", "Ocurrió un error!", "error");
+        }
+      });
+  };
 
   const mostrarModalEvento = () => {
     setShowEventModal(true);
@@ -43,9 +85,10 @@ function CrearEvento() {
     }
   };
 
-  const crearEvento = async (e) => {
+  const handleEdit = () => {
     if (
       nombreEvento.trim() === "" ||
+      organizador.trim() === "" ||
       fechaInicioEvento.trim() === "" ||
       horaInicioEvento.trim() === "" ||
       fechaFinEvento.trim() === "" ||
@@ -55,19 +98,16 @@ function CrearEvento() {
       categoriaEvento.length === 0 ||
       (!entradaGratis && costoEntrada.trim() === "") ||
       contactoEvento.trim() === "" ||
-      imageEvento.trim() === "" ||
-      organizador.trim() === ""
+      imageEvento.trim() === ""
     ) {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else {
-      e.preventDefault();
-
+      const endPoint = `${Constantes.URL_BASE}/eventos/updateEvento/${id}`;
       
       const datosEvento = {
-        usuario: usuario,
         nombre: nombreEvento,
         fechaInicioEvento: fechaInicioEvento,
-        horaInicioEvento: horaInicioEvento,
+        horaInicioEvento :horaInicioEvento,
         fechaFinEvento: fechaFinEvento,
         horaFinEvento: horaFinEvento,
         ubicacion: ubicacionEvento,
@@ -78,15 +118,14 @@ function CrearEvento() {
         imageEvento: imageEvento,
         organizador: organizador,
       };
-      const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
-
-      axios
-        .post(endPoint, datosEvento)
+  
+      axios.put(endPoint, datosEvento)
         .then((resp) => {
           console.log(resp);
+          Swal.fire('Información', 'Evento actualizado con éxito', 'success');
           cerrarModalEvento();
-          Swal.fire('Información', 'Evento creado', 'success');
           window.location.reload();
+          
         })
         .catch((error) => {
           console.error(error);
@@ -98,17 +137,21 @@ function CrearEvento() {
         });
     }
   };
+  
 
   return (
     <div>
-      <Button className="crear-evento-button" variant="outline-primary" onClick={mostrarModalEvento}>
-        Crear evento
-      </Button>{' '}
+      <button className="Btn" onClick={mostrarModalEvento}>Editar
+        <svg className="svg" viewBox="0 0 512 512">
+          {/* Icono de editar aquí */}
+        </svg>
+      </button>
 
       <Modal className="custom-modal" show={showEventModal} onHide={cerrarModalEvento} centered>
         <Modal.Header closeButton>
-          <Modal.Title className="modal-title">Crear Evento</Modal.Title>
+          <Modal.Title className="modal-title">Editar Evento</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Nombre del evento</Form.Label>
@@ -277,8 +320,8 @@ function CrearEvento() {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={crearEvento}>
-            Crear Evento
+          <Button variant="primary" onClick={handleEdit}>
+            Guardar cambios del Evento
           </Button>
           <Button variant="secondary" onClick={cerrarModalEvento}>
             Cerrar
@@ -289,4 +332,4 @@ function CrearEvento() {
   );
 }
 
-export default CrearEvento;
+export default EditEvento;

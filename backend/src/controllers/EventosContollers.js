@@ -15,8 +15,10 @@ async function create(req, res) {
 
   evento.usuario = params.usuario;
   evento.nombre = params.nombre;
-  evento.fechaHoraInicio = params.fechaHoraInicio;
-  evento.fechaHoraFin = params.fechaHoraFin;
+  evento.fechaInicioEvento = params.fechaInicioEvento;
+  evento.horaInicioEvento = params.horaInicioEvento;
+  evento.fechaFinEvento = params.fechaFinEvento;
+  evento.horaFinEvento = params.horaFinEvento;
   evento.ubicacion = params.ubicacion;
   evento.descripcion = params.descripcion;
   evento.categoria = params.categoria;
@@ -38,9 +40,6 @@ async function findAll(req, res) {
   res.status(response.status).send(response);
 }
 
-
-
-
 async function findById(req, res) {
   const id = req.params["id"];
   const response = await FindOneEvento(id);
@@ -60,17 +59,26 @@ async function deleteEventoData(req, res) {
 }
 
 async function updateEventoData(req, res) {
-  const usuario = req.params["usuario"];
+  const id = req.params["id"];
   const body = req.body;
 
-  let evento = new UserModel();
-  evento.usuario = body.usuario;
+  let evento = new eventoModel();
+  evento.nombre = body.nombre;
+  evento.fechaInicioEvento = body.fechaInicioEvento;
+  evento.horaInicioEvento = body.horaInicioEvento;
+  evento.fechaFinEvento = body.fechaFinEvento;
+  evento.horaFinEvento = body.horaFinEvento;
+  evento.ubicacion = body.ubicacion;
+  evento.descripcion = body.descripcion;
+  evento.categoria = body.categoria;
+  evento.costoEntrada = body.costoEntrada;
+  evento.contacto = body.contacto;
+  evento.imageEvento = body.imageEvento;
+  evento.organizador = body.organizador;
 
-  const response = await updateEvento(usuario, evento);
+  const response = await updateEvento(id, evento);
   res.status(response.status).send(response);
 }
-
-
 
 module.exports = {
   create,

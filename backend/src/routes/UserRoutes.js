@@ -20,7 +20,7 @@ api.get("/eventos/listEvento", EventosController.findAll);
 api.get("/eventos/findbyidEvento/:id", EventosController.findById);
 api.get("/eventos/findEventoname/:userevento", EventosController.findOneEvento);
 api.delete("/eventos/deleteEvento/:id", EventosController.deleteEventoData);
-api.put("/eventos/updateEvento/:usuario", EventosController.updateEventoData);
+api.put("/eventos/updateEvento/:id", EventosController.updateEventoData);
 
 
 // Routes para crear lugares

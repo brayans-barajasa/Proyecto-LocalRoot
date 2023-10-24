@@ -4,8 +4,10 @@ const schema = mongoose.Schema;
 const EventosSchema = schema({
     usuario: String,
     nombre: String,
-    fechaHoraInicio: String,
-    fechaHoraFin: String,
+    fechaInicioEvento: String,
+    horaInicioEvento: String,
+    fechaFinEvento: String,
+    horaFinEvento: String,
     ubicacion: String,
     descripcion: String,
     categoria: [],

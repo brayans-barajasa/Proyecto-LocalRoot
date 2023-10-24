@@ -93,7 +93,7 @@ async function findOneUsuario(req, res) {
 
 async function deleteUserData(req, res) {
   const usuario = req.params["usuario"];
-  const response = await deleteUser(usuario);
+  const response = await FindOneUser(usuario);
   res.status(response.status).send(response);
 }
 

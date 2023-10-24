@@ -7,7 +7,7 @@ import axios from 'axios';
 import Constantes from "../../utils/Constantes";
 import '../styles/CrearEvento.css';
 
-function CrearEvento() {
+function CrearLugares() {
   const [showPlaceModal, setShowPlaceModal] = useState(false);
 
   const usuario = localStorage.getItem("username");
@@ -230,4 +230,4 @@ function CrearEvento() {
   );
 }
 
-export default CrearEvento;
+export default CrearLugares;
