@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Swal from 'sweetalert2';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Swal from "sweetalert2";
+import axios from "axios";
 import Constantes from "../../utils/Constantes";
-import '../styles/CrearEvento.css';
+import "../styles/CrearEvento.css";
 
-function CrearEvento() {
+function CrearEditarEvento() {
   const [showEventModal, setShowEventModal] = useState(false);
-  const usuario = localStorage.getItem("username");
+  const { id } = useParams();
 
   const [nombreEvento, setNombreEvento] = useState("");
   const [organizador, setOrganizador] = useState("");
@@ -24,6 +25,51 @@ function CrearEvento() {
   const [imageEvento, setimageEvento] = useState("");
   const [contactoEvento, setContactoEvento] = useState("");
   const [entradaGratis, setEntradaGratis] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      // Si se proporciona un ID, estamos en modo edición, así que cargamos los datos del evento
+      handleOneEvento();
+    }
+  }, [id]);
+
+  const handleOneEvento = () => {
+    const endPoint = `${Constantes.URL_BASE}/eventos/findbyidEvento/${id}`;
+
+    axios
+      .get(endPoint)
+      .then((resp) => {
+        const eventoData = resp.data.result;
+        setNombreEvento(eventoData.nombre);
+        setOrganizador(eventoData.organizador);
+        setFechaInicioEvento(eventoData.fechaInicioEvento);
+        setHoraInicioEvento(eventoData.horaInicioEvento);
+        setFechaFinEvento(eventoData.fechaFinEvento);
+        setHoraFinEvento(eventoData.horaFinEvento);
+        setUbicacionEvento(eventoData.ubicacion);
+        setDescripcionEvento(eventoData.descripcion);
+        setCategoriaEvento(eventoData.categoria);
+        if (eventoData.costoEntrada === "Gratis") {
+          setEntradaGratis(true);
+          setCostoEntrada("");
+        } else {
+          setEntradaGratis(false);
+          setCostoEntrada(eventoData.costoEntrada);
+        }
+        setContactoEvento(eventoData.contacto);
+        setimageEvento(eventoData.imageEvento);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 400) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else if (err.response.status === 401) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else {
+          Swal.fire("Información!", "Ocurrió un error!", "error");
+        }
+      });
+  };
 
   const mostrarModalEvento = () => {
     setShowEventModal(true);
@@ -43,7 +89,20 @@ function CrearEvento() {
     }
   };
 
-  const crearEvento = async (e) => {
+  // Función para convertir la hora de 24 horas a AM/PM
+  function convertirHoraAPM(hora24) {
+    const [hora, minutos] = hora24.split(":");
+    let horaAMPM = hora;
+    const ampm = parseInt(hora) < 12 ? "AM" : "PM";
+
+    if (horaAMPM > 12) {
+      horaAMPM = horaAMPM - 12;
+    }
+
+    return `${horaAMPM}:${minutos} ${ampm}`;
+  }
+
+  const handleGuardarEvento = () => {
     if (
       nombreEvento.trim() === "" ||
       fechaInicioEvento.trim() === "" ||
@@ -58,18 +117,23 @@ function CrearEvento() {
       imageEvento.trim() === "" ||
       organizador.trim() === ""
     ) {
-      Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
+      Swal.fire("Error", "Por favor, completa todos los campos.", "error");
     } else {
-      e.preventDefault();
+      // Convertir la hora de 24 horas a AM/PM
+      const horaInicioAMPM = convertirHoraAPM(horaInicioEvento);
+      const horaFinAMPM = convertirHoraAPM(horaFinEvento);
 
-      
+      const endPoint = id
+        ? `${Constantes.URL_BASE}/eventos/updateEvento/${id}`
+        : `${Constantes.URL_BASE}/eventos/createEvento`;
+
       const datosEvento = {
-        usuario: usuario,
+        usuario: localStorage.getItem("username"),
         nombre: nombreEvento,
         fechaInicioEvento: fechaInicioEvento,
-        horaInicioEvento: horaInicioEvento,
+        horaInicioEvento: horaInicioAMPM,
         fechaFinEvento: fechaFinEvento,
-        horaFinEvento: horaFinEvento,
+        horaFinEvento: horaFinAMPM,
         ubicacion: ubicacionEvento,
         descripcion: descripcionEvento,
         categoria: categoriaEvento,
@@ -78,37 +142,47 @@ function CrearEvento() {
         imageEvento: imageEvento,
         organizador: organizador,
       };
-      const endPoint = Constantes.URL_BASE + '/eventos/createEvento';
 
-      axios
-        .post(endPoint, datosEvento)
+      const axiosMethod = id ? axios.put : axios.post;
+
+      axiosMethod(endPoint, datosEvento)
         .then((resp) => {
           console.log(resp);
+          Swal.fire(
+            "Información",
+            id ? "Evento actualizado con éxito" : "Evento creado con éxito",
+            "success"
+          );
           cerrarModalEvento();
-          Swal.fire('Información', 'Evento creado', 'success');
           window.location.reload();
         })
         .catch((error) => {
           console.error(error);
           if (error.response && (error.response.status === 400 || error.response.status === 404)) {
-            Swal.fire('Error', error.response.data.message, 'error');
+            Swal.fire("Error", error.response.data.message, "error");
           } else {
-            Swal.fire('Error', 'Ocurrió un error', 'error');
+            Swal.fire("Error", "Ocurrió un error", "error");
           }
         });
     }
   };
 
+  function autoExpand(e) {
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  }
+
   return (
     <div>
       <Button className="crear-evento-button" variant="outline-primary" onClick={mostrarModalEvento}>
-        Crear evento
-      </Button>{' '}
+        {id ? "Editar evento" : "Crear evento"}
+      </Button>{" "}
 
       <Modal className="custom-modal" show={showEventModal} onHide={cerrarModalEvento} centered>
         <Modal.Header closeButton>
-          <Modal.Title className="modal-title">Crear Evento</Modal.Title>
+          <Modal.Title className="modal-title">{id ? "Editar Evento" : "Crear Evento"}</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Nombre del evento</Form.Label>
@@ -180,6 +254,10 @@ function CrearEvento() {
               placeholder="Descripción del evento"
               value={descripcionEvento}
               onChange={(e) => setDescripcionEvento(e.target.value)}
+              onInput={autoExpand}
+
+
+
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -276,9 +354,10 @@ function CrearEvento() {
             style={{ maxWidth: "50%" }}
           />
         </Modal.Body>
+
         <Modal.Footer>
-          <Button variant="primary" onClick={crearEvento}>
-            Crear Evento
+          <Button variant="primary" onClick={handleGuardarEvento}>
+            {id ? "Guardar cambios del Evento" : "Crear Evento"}
           </Button>
           <Button variant="secondary" onClick={cerrarModalEvento}>
             Cerrar
@@ -289,4 +368,4 @@ function CrearEvento() {
   );
 }
 
-export default CrearEvento;
+export default CrearEditarEvento;

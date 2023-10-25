@@ -34,3 +34,13 @@ li {
   transform: translateY(5px) scale(1.05); /* Eleva y escala la caja */
   z-index: 2; /* Coloca la caja al frente */
 }
+
+ 
+.orden{
+  display: flex;
+  
+}
+
+.orden div{
+  width: 50%;
+}

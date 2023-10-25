@@ -6,7 +6,7 @@ import Eventos from './pages/Eventos'
 import LugaresTuristicos from './pages/LugaresTuristicos'
 import SobreNosotros from './pages/SobreNosotros'
 import SobreMedellin from './pages/SobreMedellin'
-import PreguntasFrecuentes from './pages/Preguntas'
+import PreguntasFrecuentes from './pages/PreguntasFrecuentes'
 import Terminos from './pages/Terminos'
 import Perfil from './pages/Perfil'
 import InfoEvento from "./pages/InfoEvento"

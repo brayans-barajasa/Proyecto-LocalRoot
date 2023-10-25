@@ -6,8 +6,8 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import VerEvento from "../components/verEvento";
 import Lugares from "../components/Lugares";
-import CrearEvento from "../components/CrearEvento"
-import CrearLugar from "../components/CrearLugar"
+import CrearEditarEvento from "../components/CrearEditarEvento"
+import CrearEditarLugares from "../components/CrearEditarLugares";
 import axios from 'axios';
 import Constantes from "../../utils/Constantes"
 import Swal from 'sweetalert2';
@@ -33,6 +33,7 @@ const Perfil = () => {
         })
             .then((resp) => {
                 setDatauser(resp.data.result);
+                console.log(Datauser)
             })
             .catch((err) => {
                 console.log(err);
@@ -46,9 +47,7 @@ const Perfil = () => {
             });
     };
 
-    useEffect(() => {
-        handleOneUser();
-    });
+    
 
     //consumo para ver los eventos creados por el usuario
     async function handleEvento() {
@@ -61,6 +60,36 @@ const Perfil = () => {
         })
             .then((resp) => {
                 setDataEvento(resp.data.result.filter(elemento => elemento.usuario === usuario));
+                console.log(DataEvento)
+
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.response.status == 400) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else if (err.response.status == 401) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else {
+                    Swal.fire("Información!", "Ocurrio un error!", "error");
+                }
+            });
+    }
+   
+
+    //consumo para ver los lugares creados por el usuario
+
+    async function handleLugar() {
+
+
+        const endPoin = Constantes.URL_BASE + '/lugares/listlugares';
+
+        await axios.get(endPoin, {
+            headers: { Authorization: `bearer ${token}` },
+        })
+            .then((resp) => {
+                setDataLugar(resp.data.result.filter(elemento => elemento.usuario === usuario));
+                console.log(DataLugar)
+
             })
             .catch((err) => {
                 console.log(err);
@@ -75,35 +104,10 @@ const Perfil = () => {
     }
     useEffect(() => {
         handleEvento();
-    });
+        handleOneUser();
 
-    //consumo para ver los lugares creados por el usuario
-
-    async function handleLugar() {
-
-
-        const endPoin = Constantes.URL_BASE + '/lugares/listlugares';
-
-        await axios.get(endPoin, {
-            headers: { Authorization: `bearer ${token}` },
-        })
-            .then((resp) => {
-                setDataLugar(resp.data.result.filter(elemento => elemento.usuario === usuario));
-            })
-            .catch((err) => {
-                console.log(err);
-                if (err.response.status == 400) {
-                    Swal.fire("Información!", err.response.data.message, "error");
-                } else if (err.response.status == 401) {
-                    Swal.fire("Información!", err.response.data.message, "error");
-                } else {
-                    Swal.fire("Información!", "Ocurrio un error!", "error");
-                }
-            });
-    }
-    useEffect(() => {
         handleLugar();
-    });
+    },[]);
 
 
 
@@ -149,8 +153,8 @@ const Perfil = () => {
                 </div>
 
                 <div className="crearEvento">
-                    <CrearEvento />
-                    <CrearLugar />
+                    <CrearEditarEvento />
+                    <CrearEditarLugares />
                 </div>
 
                 <div className="secciones">

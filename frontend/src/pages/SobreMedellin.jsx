@@ -7,7 +7,7 @@ const SobreMedellin = () => {
   return (
     <div className="contGeneral">
       <Header />
-      
+
       <div className="navCategoria">
         <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li className="nav-item" role="presentation">
@@ -150,6 +150,7 @@ const SobreMedellin = () => {
               disfrutan de una experiencia única en esta fascinante ciudad colombiana.
             </p>
           </div>
+
           <div
             className="tab-pane fade"
             id="pills-ubicacion"
@@ -167,6 +168,7 @@ const SobreMedellin = () => {
             <p>Medellín se destaca por su estratégica ubicación en el centro de Colombia, lo que facilita el acceso desde otras ciudades importantes del país. Su desarrollo económico y su rica oferta cultural la han convertido en un destino turístico en auge en Colombia. Los visitantes pueden disfrutar de una variedad de actividades, como explorar parques, museos, festivales y una emocionante escena gastronómica. La hospitalidad de su gente y su espíritu acogedor hacen que los turistas se sientan bienvenidos y disfruten de una experiencia única en esta vibrante ciudad.</p>
 
           </div>
+
           <div
             className="tab-pane fade"
             id="pills-clima"
@@ -177,27 +179,37 @@ const SobreMedellin = () => {
             <h2>Clima en Medellín a lo largo del año</h2>
             <p>El clima en Medellín, conocida como la "Ciudad de la Eterna Primavera", es agradable durante todo el año debido a su ubicación a una altitud de aproximadamente 1,495 metros sobre el nivel del mar en el Valle de Aburrá. Medellín goza de un clima primaveral durante todo el año, lo que le ha valido el apodo de la "Ciudad de la Eterna Primavera." El clima es subtropical de montaña y se caracteriza por tener temperaturas agradables y una relativa humedad. Las temperaturas promedio oscilan entre 16°C y 26°C.</p>
 
-            <h4>Temporada de Lluvias (Abril a Noviembre):</h4>
-            <ul>
-              <li>Durante estos meses, Medellín experimenta una mayor cantidad de lluvias, especialmente entre abril y junio, y luego nuevamente en octubre y noviembre.</li>
-              <li>El clima es más fresco y húmedo en esta temporada, con temperaturas promedio que oscilan entre los 15°C y los 25°C.</li>
-              <li>Los paisajes verdes y exuberantes son un punto a favor de visitar Medellín durante la temporada de lluvias.</li>
-            </ul>
+            <div className="orden">
+              <div>
 
-            <h4>Temporada Seca (Diciembre a Marzo):</h4>
-            <ul>
-              <li>Estos meses son la temporada seca en Medellín, y generalmente ofrecen días más soleados y menos precipitaciones.</li>
-              <li>Las temperaturas suelen ser más cálidas, con promedios de 20°C a 30°C.</li>
-              <li>La temporada seca es ideal para actividades al aire libre, como senderismo, exploración de parques naturales y visitas a lugares turísticos.</li>
-            </ul>
+                <h4>Temporada de Lluvias (Abril a Noviembre):</h4>
+                <ul>
+                  <li>Durante estos meses, Medellín experimenta una mayor cantidad de lluvias, especialmente entre abril y junio, y luego nuevamente en octubre y noviembre.</li>
+                  <li>El clima es más fresco y húmedo en esta temporada, con temperaturas promedio que oscilan entre los 15°C y los 25°C.</li>
+                  <li>Los paisajes verdes y exuberantes son un punto a favor de visitar Medellín durante la temporada de lluvias.</li>
+                </ul>
+              </div>
 
-            <h4>Consejos para elegir la mejor época para visitar:</h4>
-            <ul>
-              <li>Si prefieres un clima más fresco y no te importa la posibilidad de lluvias, los meses de abril a junio y octubre a noviembre son buenos para disfrutar de la vegetación exuberante y los precios más bajos en alojamiento y turismo.</li>
-              <li>Si buscas temperaturas más cálidas y un clima más soleado para actividades al aire libre, considera visitar Medellín entre diciembre y marzo. Estos son los meses ideales para disfrutar de la ciudad y sus alrededores sin preocuparte por la lluvia.</li>
-              <li>Ten en cuenta que la temporada alta de turismo en Medellín suele ser durante la temporada seca, especialmente en diciembre y enero. Si prefieres evitar multitudes, considera planificar tu viaje para fechas fuera de estos meses.</li>
-            </ul>
+              <div>
 
+                <h4>Temporada Seca (Diciembre a Marzo):</h4>
+                <ul>
+                  <li>Estos meses son la temporada seca en Medellín, y generalmente ofrecen días más soleados y menos precipitaciones.</li>
+                  <li>Las temperaturas suelen ser más cálidas, con promedios de 20°C a 30°C.</li>
+                  <li>La temporada seca es ideal para actividades al aire libre, como senderismo, exploración de parques naturales y visitas a lugares turísticos.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div>
+
+              <h4>Consejos para elegir la mejor época para visitar:</h4>
+              <ul>
+                <li>Si prefieres un clima más fresco y no te importa la posibilidad de lluvias, los meses de abril a junio y octubre a noviembre son buenos para disfrutar de la vegetación exuberante y los precios más bajos en alojamiento y turismo.</li>
+                <li>Si buscas temperaturas más cálidas y un clima más soleado para actividades al aire libre, considera visitar Medellín entre diciembre y marzo. Estos son los meses ideales para disfrutar de la ciudad y sus alrededores sin preocuparte por la lluvia.</li>
+                <li>Ten en cuenta que la temporada alta de turismo en Medellín suele ser durante la temporada seca, especialmente en diciembre y enero. Si prefieres evitar multitudes, considera planificar tu viaje para fechas fuera de estos meses.</li>
+              </ul>
+            </div>
             <p>Además, la ciudad cuenta con una amplia variedad de microclimas debido a su topografía montañosa, lo que la convierte en un lugar único para experimentar diferentes condiciones climáticas en cortas distancias.</p>
           </div>
 

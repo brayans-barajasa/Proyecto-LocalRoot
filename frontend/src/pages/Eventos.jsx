@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import VerEvento from "../components/VerEvento";
+import VerEventos from "../components/verEvento";
 import Constantes from "../../utils/Constantes";
 import "../styles/Eventos.css";
 
@@ -20,7 +20,6 @@ const Eventos = () => {
       headers: { Authorization: `bearer ${token}` },
     })
       .then((resp) => {
-        console.log(resp);
         setDataEvento(resp.data.result);
       })
       .catch((err) => {
@@ -105,7 +104,7 @@ const Eventos = () => {
         {noResultados ? (
           <p className="no-resultados-mensaje">No hay eventos que coincidan con la búsqueda.</p>
         ) : (
-          <VerEvento eventos={search.length ? eventosFiltrados : DataEvento} />
+          <VerEventos eventos={search.length ? eventosFiltrados : DataEvento} />
         )}
       </div>
 

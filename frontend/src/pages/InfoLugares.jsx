@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import Constantes from "../../utils/Constantes";
 import "../styles/InfoEvento.css"
 import Swal from "sweetalert2";
-import EditLugares from '../components/EditLugares';
+import CrearEditarLugares from '../components/CrearEditarLugares';
 
 const InfoLugares = () => {
     const { id } = useParams();
@@ -80,9 +80,6 @@ const InfoLugares = () => {
         <div className='contGeneral'>
             <Header />
             <div className="Contenedor">
-
-
-
                 <h1>
                     Encuentra grandes lugares y disfrútalos
                 </h1>
@@ -91,40 +88,62 @@ const InfoLugares = () => {
                     <img src={DataLugar.fotosLugar} alt="" />
                     <div className="informacion">
                         <div className="horario">
-                            <p><b>Horario:</b> {DataLugar.horarioLugar}</p>
-                            <p><b>Horario:</b> {DataLugar.horarioLugar}</p>
-                            <p><b>Contacto:</b> {DataLugar.contactoLugar}</p>
-                            <p><b>Organizador:</b> {DataLugar.usuario}</p>
-                        </div>
-                        <div className='datos'>
-                            <p><b>Ubicación:</b> {DataLugar.direccionLugar}</p>
+                            <div>
+                                <b>Horario:</b>
+                                {DataLugar.horarioLugar && DataLugar.horarioLugar.split('\n').map((parrafo, index) => (
+                                    <p key={index}>{parrafo}</p>
+                                ))}
+                            </div>
 
-                            <p>
-                                <b>Categoría:</b>
+                            <div>
+                                <b>Contacto:</b>
+                                {DataLugar.contactoLugar && DataLugar.contactoLugar.split('\n').map((parrafo, index) => (
+                                    <p key={index}>{parrafo}</p>
+                                ))}
+                            </div>
+                            
+                        </div>
+
+                        <div className='datos'>
+                            <div>
+                                <b>Ubicación:</b>
+                                {DataLugar.direccionLugar && DataLugar.direccionLugar.split('\n').map((parrafo, index) => (
+                                    <p key={index}>{parrafo}</p>
+                                ))}
+                            </div>
+                            <div>
+                                <p><b>Categoría:</b></p>
                                 <ul>
                                     {DataLugar.categoriaLugar?.map((categoria, index) => (
                                         <li key={index}>{categoria}</li>
                                     ))}
                                 </ul>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <p  className='descrip'><b>Atracciones: <br /> </b> {DataLugar.atraccionesLugar}</p>
+                <div className="descrip">
+                    <b>Informacion del lugar:</b>
+                    {DataLugar.descripcionLugar && DataLugar.descripcionLugar.split('\n').map((parrafo, index) => (
+                        <p key={index}>{parrafo}</p>
+                    ))}
+                </div>
 
-                <p className='descrip'> Informacion del lugar: <br />{DataLugar.descripcionLugar}</p>
+                <div className="descrip">
+                    <b>Atracciones del lugar:</b>
+                    {DataLugar.atraccionesLugar && DataLugar.atraccionesLugar.split('\n').map((parrafo, index) => (
+                        <p key={index}>{parrafo}</p>
+                    ))}
+                </div>
                 {DataLugar.usuario === usuario ? (
 
                     <div className='d-flex'>
-
-
-                        <button class="btn" onClick={() => handleDelete(DataLugar)}>
-                            <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                        <button className="btn" onClick={() => handleDelete(DataLugar)}>
+                            <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" className="icon">
                                 <path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
                             </svg>
                         </button>
-                        <EditLugares />
-
+                        <CrearEditarLugares />
                     </div>
 
                 ) : null}

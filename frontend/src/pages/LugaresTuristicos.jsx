@@ -13,28 +13,28 @@ const LugaresTuristicos = () => {
   const [lugaresFiltrados, setLugaresFiltrados] = useState([]);
   const [noResultados, setNoResultados] = useState(false);
 
-const obtenerLugares = () => {
-  const endPoint = Constantes.URL_BASE + '/lugares/listlugares';
+  const obtenerLugares = () => {
+    const endPoint = Constantes.URL_BASE + '/lugares/listlugares';
 
-  axios
-    .get(endPoint, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((resp) => {
-      console.log(resp);
-      setDataLugares(resp.data.result);
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err.response && err.response.status === 400) {
-        Swal.fire("Información!", err.response.data.message, "error");
-      } else if (err.response && err.response.status === 401) {
-        Swal.fire("Información!", err.response.data.message, "error");
-      } else {
-        Swal.fire("Información!", "Ocurrió un error!", "error");
-      }
-    });
-};
+    axios
+      .get(endPoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((resp) => {
+        console.log(resp);
+        setDataLugares(resp.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response && err.response.status === 400) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else if (err.response && err.response.status === 401) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else {
+          Swal.fire("Información!", "Ocurrió un error!", "error");
+        }
+      });
+  };
 
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const obtenerLugares = () => {
         )}
       </div>
       <Footer />
-    </div>  
+    </div>
   );
 };
 

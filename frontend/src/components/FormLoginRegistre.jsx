@@ -73,16 +73,15 @@ function Login() {
             usuario: usuario,
             email: email,
             password: password,
-            foto: "https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            foto: foto,
         };
 
         await axios
             .post(endPoint, data)
             .then((resp) => {
                 console.log(resp);
-                window.location.reload();
                 Swal.fire('Información', 'Usuario ' + usuario + ' creado, inicia sesión');
-                
+                navigate('/Inicio');
             })
             .catch((error) => {
                 console.log(error);

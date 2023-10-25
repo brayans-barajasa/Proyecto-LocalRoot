@@ -4,7 +4,8 @@
   "description": "es una api de empleados",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "test"
   },
   "author": "Amilkar Hernandez",
   "license": "ISC",
@@ -19,6 +20,8 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }

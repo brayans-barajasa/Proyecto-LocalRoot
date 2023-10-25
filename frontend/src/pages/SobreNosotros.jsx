@@ -21,7 +21,7 @@ const SobreNosotros = () => {
                     </div>
                     <div className="vision">
 
-                        <h2>Visión</h2>
+                        <h2>Nuestra Visión</h2>
                         <p>Nuestra visión es convertirnos en un recurso líder en la promoción y exploración de nuestra región. Queremos ser reconocidos como un equipo apasionado que inspira a las personas a descubrir la riqueza cultural, la belleza natural y la diversidad gastronómica que nuestra región tiene para ofrecer.</p>
                     </div>
 

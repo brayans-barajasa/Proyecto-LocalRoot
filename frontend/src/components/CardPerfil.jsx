@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types"; // Importa PropTypes para definir el tipo de prop
 import "../styles/CardPerfil.css";
 import { useNavigate } from "react-router-dom";
 

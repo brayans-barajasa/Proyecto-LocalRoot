@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 const VerEventos = ({ eventos }) => {
   const eventosReverso = eventos.slice().reverse();
-  
+
   return (
     <div className="eventos">
       {eventosReverso.map((DataEvento) => (
@@ -11,8 +11,15 @@ const VerEventos = ({ eventos }) => {
           <div className="evento-info">
             <div className="info">
               <div className="fecha">
-                <p>Fecha inicio: {DataEvento.fechaHoraInicio}</p>
-                <p>Fecha fin: {DataEvento.fechaHoraFin}</p>
+                <div>
+                  <p>Fecha inicio: {DataEvento.fechaInicioEvento}</p>
+                  <p>hora inicio: {DataEvento.horaInicioEvento
+                  }</p>
+                </div>
+                <div>
+                  <p>Fecha fin: {DataEvento.fechaFinEvento}</p>
+                  <p>Fecha fin: {DataEvento.horaFinEvento}</p>
+                </div>
               </div>
               <p>Ubicación: {DataEvento.ubicacion}</p>
               <div className="contener">

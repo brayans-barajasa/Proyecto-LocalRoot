@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import Constantes from "../../utils/Constantes";
 import "../styles/InfoEvento.css"
 import Swal from "sweetalert2";
-import EditEventos from '../components/editeventos';
+import CrearEditarEvento from '../components/CrearEditarEvento';
 
 const InfoEvento = () => {
     const { id } = useParams();
@@ -25,6 +25,7 @@ const InfoEvento = () => {
         })
             .then((resp) => {
                 setDataEvento(resp.data.result);
+                console.log(DataEvento)
             })
             .catch((err) => {
                 console.log(err);
@@ -74,7 +75,6 @@ const InfoEvento = () => {
         });
     }
 
-    
 
     return (
         <div className='contGeneral'>
@@ -92,28 +92,36 @@ const InfoEvento = () => {
                         <div className="horario">
                             <p><b>Fecha Inicio:</b> <br />{DataEvento.fechaInicioEvento}</p>
                             <p><b>Hora Inicio:</b> <br />{DataEvento.horaInicioEvento}</p>
-                            <p> <b> fecha  fin:</b> <br />{DataEvento.fechaFinEvento} </p>
-                            <p> <b> fHora fin:</b> <br />{DataEvento.horaFinEvento} </p>
-                            <p><b>contacto:</b><br /> {DataEvento.contacto}</p>
-                            <p><b>organizador:</b><br /> {DataEvento.organizador}</p>
+                            <p> <b>Fecha  fin:</b> <br />{DataEvento.fechaFinEvento} </p>
+                            <p> <b>Hora fin:</b> <br />{DataEvento.horaFinEvento} </p>
+                            <p><b>Contacto:</b><br /> {DataEvento.contacto}</p>
+                            <p><b>Organizador:</b><br /> {DataEvento.organizador}</p>
                         </div>
                         <div className='datos' >
                             <p><b>ubicacion:</b> <br /> {DataEvento.ubicacion}</p>
-                            <p>
-                                <b>Categoría:</b>
+                            <div>
+                                <p>
+                                    <b>Categoría:</b>
+                                </p>
                                 <ul>
                                     {DataEvento.categoria?.map((categoria, index) => (
                                         <li key={index}>{categoria}</li>
                                     ))}
                                 </ul>
-                            </p>
+                            </div>
+
 
                             <p><b>costo Entrada: </b> <br />{DataEvento.costoEntrada}</p>
                         </div>
                     </div>
 
                 </div>
-                <p className='descrip'>{DataEvento.descripcion}</p>
+                <div className="descrip">
+
+                    {DataEvento.descripcion && DataEvento.descripcion.split('\n').map((parrafo, index) => (
+                        <p key={index}>{parrafo}</p>
+                    ))}
+                </div>
 
                 {DataEvento.usuario === usuario ? (
 
@@ -123,7 +131,7 @@ const InfoEvento = () => {
                                 <path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
                             </svg>
                         </button>
-                        <EditEventos />
+                        <CrearEditarEvento />
 
                     </div>
 
