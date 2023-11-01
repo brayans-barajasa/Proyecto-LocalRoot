@@ -171,7 +171,19 @@ function CrearEditarEvento() {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
   }
-
+  const categoriasDiferentes = [
+    "Entretenimiento",
+    "Arte y Cultura",
+    "Deportes",
+    "Educación",
+    "Alimentación y Bebidas",
+    "Salud y Bienestar",
+    "Tecnología",
+    "Negocios y Finanzas",
+    "Medio Ambiente",
+    "Comunidad y Voluntariado"
+  ];
+  
   return (
     <div>
       <Button className="crear-evento-button" variant="outline-primary" onClick={mostrarModalEvento}>
@@ -263,52 +275,27 @@ function CrearEditarEvento() {
           <Form.Group className="mb-3">
             <Form.Label>Categoría del evento</Form.Label>
             <div className="row">
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria1"
-                  label="Categoria 1"
-                  checked={categoriaEvento.includes("Categoria 1")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 1")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria2"
-                  label="Categoria 2"
-                  checked={categoriaEvento.includes("Categoria 2")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 2")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria3"
-                  label="Categoria 3"
-                  checked={categoriaEvento.includes("Categoria 3")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 3")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria4"
-                  label="Categoria 4"
-                  checked={categoriaEvento.includes("Categoria 4")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 4")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria5"
-                  label="Categoria 5"
-                  checked={categoriaEvento.includes("Categoria 5")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 5")}
-                />
-              </div>
+              {categoriasDiferentes.map((categoria, index) => (
+                <div className="col-4" key={index}>
+                  <Form.Check
+                    type="checkbox"
+                    id={`categoria${index + 1}`}
+                    label={categoria}
+                    checked={categoriaEvento.includes(categoria)}
+                    onChange={(e) => handleCategoriaCheckbox(e.target.checked, categoria)}
+                  />
+                </div>
+              ))}
             </div>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Contacto</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Información de contacto"
+              value={contactoEvento}
+              onChange={(e) => setContactoEvento(e.target.value)}
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Check
@@ -329,15 +316,8 @@ function CrearEditarEvento() {
               />
             </Form.Group>
           )}
-          <Form.Group className="mb-3">
-            <Form.Label>Contacto</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Información de contacto"
-              value={contactoEvento}
-              onChange={(e) => setContactoEvento(e.target.value)}
-            />
-          </Form.Group>
+
+          
           <Form.Group className="mb-3">
             <Form.Label>Enlace de la imagen del evento</Form.Label>
             <Form.Control

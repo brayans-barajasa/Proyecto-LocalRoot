@@ -80,13 +80,7 @@ function Header() {
                   <Nav.Link className='navLink' href="#LugaresTuristicos" onClick={redirigirLugaresTuristicos}>Lugares Turisticos</Nav.Link>
                   <Nav.Link className='navLink' href="#Eventos" onClick={redirigirEventos}>Eventos</Nav.Link>
 
-                  <NavDropdown className='navLink' title="Idiomas" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="#Italiano">Italiano</NavDropdown.Item>
-                    <NavDropdown.Item href="#Español">Español</NavDropdown.Item>
-                    <NavDropdown.Item href="#Inglés">Inglés</NavDropdown.Item>
-                    <NavDropdown.Item href="#Francés">Francés</NavDropdown.Item>
-                    <NavDropdown.Item href="#Alemán">Alemán</NavDropdown.Item>
-                  </NavDropdown>
+                  
                 </Nav>
                 <Form className="d-flex">
                   <Form.Control

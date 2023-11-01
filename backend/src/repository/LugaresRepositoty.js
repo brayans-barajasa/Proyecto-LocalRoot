@@ -1,5 +1,6 @@
 const { Response } = require("../utils/Response");
 const UserModel = require("../models/LugaresModels");
+const UserModelLike = require("../models/LikeLugaresModels");
 
 module.exports.CreateLugar = async (user) => {
   return new Promise((resolve, reject) => {
@@ -115,6 +116,69 @@ module.exports.updateLugar = async (id, lugar) => {
       .then((resp) => {
         Response.status = 200;
         Response.message = "Registro Actualizado correctamente";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+
+
+module.exports.CreateLugarLike = async (like) => {
+  return new Promise((resolve, reject) => {
+    like
+      .save()
+      .then((resp) => {
+        Response.status = 201;
+        Response.message = "Se ha agregado lugar a favoritos Correctamente";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+
+module.exports.FindAllLugarLike = async (sort) => {
+  return new Promise((resolve, reject) => {
+    UserModelLike.find()
+      .sort(sort)
+      .then((resp) => {
+        Response.status = 200;
+        Response.message = "Registros de los eventos Encontrados";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+
+
+module.exports.FindAllLugarLike = async (sort) => {
+  return new Promise((resolve, reject) => {
+    UserModelLike.find()
+      .sort(sort)
+      .populate({path:"idLugares"})
+      .then((resp) => {
+        Response.status = 200;
+        Response.message = "Registros de los eventos Encontrados";
         Response.result = resp;
         resolve(Response);
       })

@@ -24,7 +24,7 @@ function RestablecerPassword() {
     if (usuario === "" || password === "" || confirmPassword === "") {
       Swal.fire('Error', 'Por favor, completa todos los campos.', 'error');
     } else if (password === confirmPassword) {
-      const endPoint = `${Constantes.URL_BASE}/usuarios/updateUser/${usuario}`;
+      const endPoint = `${Constantes.URL_BASE}/usuarios/updateUserPassword/${usuario}`;
 
       const Data = {
         usuario: usuario,

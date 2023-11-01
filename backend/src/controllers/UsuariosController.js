@@ -25,6 +25,7 @@ async function create(req, res) {
     res.status(400).send({ message: "El Email es Requerido" });
     return;
   }
+
   function esCorreoElectronicoValido(correo) {
     const patronCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return patronCorreo.test(correo);
@@ -49,7 +50,7 @@ async function create(req, res) {
     return;
   }
 
-  const emailExiste = await FindOneUsername(params.email);
+  const emailExiste = await FindOneUser(params.email);
   if (emailExiste.result) {
     res.status(400).send({ message: "El Email ya existe" });
     return;
@@ -97,7 +98,7 @@ async function deleteUserData(req, res) {
   res.status(response.status).send(response);
 }
 
-async function updateUserData(req, res) {
+async function updateUserDataPassword(req, res) {
   const params = req.body;
   const userExiste = await FindOneUsername(params.usuario);
   if (userExiste.result) {
@@ -109,11 +110,48 @@ async function updateUserData(req, res) {
     bcrypt.hash(user.password, null, null, async function (err, hash) {
       if (hash) {
         user.password = hash;
-        user.foto = body.foto;
         const response = await updateUser(usuario, user);
         res.status(response.status).send(response);
       }
     });
+  } else {
+    res.status(400).send({ message: "Usuario  Invalido" });
+  }
+}
+async function updateUserData(req, res) {
+  const params = req.body;
+  const userExiste = await FindOneUsername(params.usuario);
+  if (userExiste.result) {
+    const usuario = req.params["usuario"];
+    const body = req.body;
+
+    function esCorreoElectronicoValido(correo) {
+      const patronCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return patronCorreo.test(correo);
+    }
+
+    if (!esCorreoElectronicoValido(params.email)) {
+      res.status(400).send({ message: "El Email ingresado no es válido" });
+      return;
+    }
+
+    const emailExiste = await FindOneUser(params.email);
+    if (emailExiste.result) {
+      res.status(400).send({ message: "El Email ya existe" });
+      return;
+    }
+
+    let user = new UserModel();
+    user.password = body.password;
+
+    user.nombres = body.nombres;
+
+    user.email = body.email;
+    user.usuario = body.usuario;
+
+    user.foto = body.foto;
+    const response = await updateUser(usuario, user);
+    res.status(response.status).send(response);
   } else {
     res.status(400).send({ message: "Usuario  Invalido" });
   }
@@ -146,6 +184,7 @@ module.exports = {
   findById,
   findOneUsuario,
   deleteUserData,
+  updateUserDataPassword,
   updateUserData,
   login,
 };

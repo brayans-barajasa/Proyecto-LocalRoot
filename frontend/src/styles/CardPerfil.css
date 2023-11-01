@@ -15,73 +15,65 @@
   transition: all 0.3s ease;
   position: absolute;
   top: 0;
-  right: 0; /* Coloca el componente en la esquina derecha */
+  right: 0; 
 }
 
-
-
 .userSvg {
+  width: 100px; /* Tamaño ajustado */
+  height: 100px; /* Tamaño ajustado */
+  border: 3px solid #7cdacc; /* Borde verde */
+  border-radius: 50%; /* Forma de círculo */
+  margin: 0 auto;
   overflow: hidden;
-  object-fit: cover;
-  width: 5rem;
-  height: 5rem;
-  border: 4px solid #7cdacc;
-  border-radius: 999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
 }
 
 .userSvg svg {
-  width: 2.5rem;
-  fill: currentColor;
+  width: 80px; /* Tamaño ajustado */
+  height: 80px; /* Tamaño ajustado */
+  fill: #7cdacc; /* Color de relleno verde */
 }
 
 .namePerfil p {
-  margin: 0;
-  margin-top: 20px;
+  margin: 10px 0;
   font-weight: 600;
-  font-size: 25px;
+  font-size: 24px; /* Tamaño del nombre ajustado */
+  color: #00d1f6; /* Texto más oscuro */
 }
 
 .namePerfil span {
   display: block;
-  font-weight: 200;
   font-size: 16px;
   cursor: pointer;
+  color: #7cdacc; /* Texto más claro */
+  font-family: sans-serif;
 }
-.namePerfil span:hover{
- 
-  transform: translate(10px) scale(1.05);
-  z-index: 1; 
-  background-color:  rgb(124, 218, 204,0.5);
-  border: 2px solid #ffffff;
 
+.namePerfil span:hover {
+  transform: scale(1.05);
+  background-color: #7cdacc; /* Fondo verde al pasar el ratón */
+  color: #fff; /* Texto blanco al pasar el ratón */
+  border-radius: 20px;
 }
 
 .CardCerrar:before {
-  content: " ";
+  content: "";
   display: block;
   width: 100%;
   height: 2px;
-  margin: 20px 0;
-  background: #7cdacc;
+  margin: 15px 0; /* Espaciado ajustado */
+  background: #7cdacc; /* Línea de separación verde */
 }
 
-.CardCerrar p  {
-  position: relative;
-  margin-right: 15px;
+.CardCerrar p {
   text-decoration: none;
-  color: inherit;
+  color: #7cdacc; /* Color de enlace verde */
+  font-weight: 600;
   cursor: pointer;
-
+  border-radius: 20px;
 }
 
-.CardCerrar p:hover{
-  border: 2px solid #ffffff;
-
-  background-color:  rgb(124, 218, 204,0.5);
-  transform: translate(10px) scale(1.05);
-  z-index: 1; 
+.CardCerrar p:hover {
+  border: 2px solid #7cdacc; /* Borde verde al pasar el ratón */
+  background-color: #f5f5f5; /* Fondo gris claro al pasar el ratón */
+  transform: scale(1.05);
 }

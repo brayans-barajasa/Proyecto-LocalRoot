@@ -134,6 +134,8 @@ function CrearEditarLugares() {
             console.log(resp);
             cerrarModalLugar();
             Swal.fire("Información", "Lugar creado", "success");
+            window.location.reload();
+
           })
           .catch((error) => {
             console.error(error);
@@ -151,6 +153,20 @@ function CrearEditarLugares() {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
   }
+  const categoriasDiferentes = [
+    "Museos",
+    "Galerías de arte",
+    "Teatros",
+    "Bibliotecas",
+    "Lugares históricos",
+    "Centros culturales",
+    "conciertos",
+    "Espacios de exposiciones",
+    "Parques",
+    "Monumentos históricos",
+    "Atracción turística",
+    "Jardines"
+  ];
 
   return (
     <div>
@@ -174,54 +190,22 @@ function CrearEditarLugares() {
               onInput={autoExpand}
             />
           </Form.Group>
+
+
           <Form.Group className="mb-3">
             <Form.Label>Categoría del Lugar</Form.Label>
             <div className="row">
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria1"
-                  label="Categoria 1"
-                  checked={categoriaLugar.includes("Categoria 1")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 1")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria2"
-                  label="Categoria 2"
-                  checked={categoriaLugar.includes("Categoria 2")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 2")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria3"
-                  label="Categoria 3"
-                  checked={categoriaLugar.includes("Categoria 3")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 3")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria4"
-                  label="Categoria 4"
-                  checked={categoriaLugar.includes("Categoria 4")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 4")}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Check
-                  type="checkbox"
-                  id="categoria5"
-                  label="Categoria 5"
-                  checked={categoriaLugar.includes("Categoria 5")}
-                  onChange={(e) => handleCategoriaCheckbox(e.target.checked, "Categoria 5")}
-                />
-              </div>
+              {categoriasDiferentes.map((categoria, index) => (
+                <div className="col-4" key={index}>
+                  <Form.Check
+                    type="checkbox"
+                    id={`categoria${index + 1}`}
+                    label={categoria}
+                    checked={categoriaLugar.includes(categoria)}
+                    onChange={(e) => handleCategoriaCheckbox(e.target.checked, categoria)}
+                  />
+                </div>
+              ))}
             </div>
           </Form.Group>
           <Form.Group className="mb-3">

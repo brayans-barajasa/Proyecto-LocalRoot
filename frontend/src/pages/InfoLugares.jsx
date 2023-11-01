@@ -14,7 +14,7 @@ const InfoLugares = () => {
     const { id } = useParams();
     const token = localStorage.getItem("token");
     const [DataLugar, setDataLugar] = useState({});
-    const usuario = localStorage.getItem("username")
+    const Usuario = localStorage.getItem("username")
 
 
     const handleOneLugar = async () => {
@@ -76,6 +76,35 @@ const InfoLugares = () => {
 
 
 
+
+
+    const Likelugares = async (e) => {
+        const datosLugar = {
+            Usuario: Usuario,
+            idLugares: id,
+
+        };
+
+        const endPoint = `${Constantes.URL_BASE}/lugares/createLugareLike`;
+
+        axios
+            .post(endPoint, datosLugar)
+            .then((resp) => {
+                console.log(resp);
+                Swal.fire("Información", "Lugar guardado en favorito", "success");
+            })
+            .catch((error) => {
+                console.error(error);
+                if (error.response && (error.response.status === 400 || error.response.status === 404)) {
+                    Swal.fire("Error", error.response.data.message, "error");
+                } else {
+                    Swal.fire("Error", "Ocurrió un error", "error");
+                }
+            });
+    };
+
+
+
     return (
         <div className='contGeneral'>
             <Header />
@@ -94,23 +123,22 @@ const InfoLugares = () => {
                                     <p key={index}>{parrafo}</p>
                                 ))}
                             </div>
-
-                            <div>
-                                <b>Contacto:</b>
-                                {DataLugar.contactoLugar && DataLugar.contactoLugar.split('\n').map((parrafo, index) => (
-                                    <p key={index}>{parrafo}</p>
-                                ))}
-                            </div>
-                            
-                        </div>
-
-                        <div className='datos'>
                             <div>
                                 <b>Ubicación:</b>
                                 {DataLugar.direccionLugar && DataLugar.direccionLugar.split('\n').map((parrafo, index) => (
                                     <p key={index}>{parrafo}</p>
                                 ))}
                             </div>
+                            
+                        </div>
+                        <div className='datos'>
+                        <div>
+                                <b>Contacto:</b>
+                                {DataLugar.contactoLugar && DataLugar.contactoLugar.split('\n').map((parrafo, index) => (
+                                    <p key={index}>{parrafo}</p>
+                                ))}
+                            </div>
+                            
                             <div>
                                 <p><b>Categoría:</b></p>
                                 <ul>
@@ -135,7 +163,9 @@ const InfoLugares = () => {
                         <p key={index}>{parrafo}</p>
                     ))}
                 </div>
-                {DataLugar.usuario === usuario ? (
+                <button onClick={Likelugares}>  Guardar en Favoritos</button>
+                        
+                {DataLugar.usuario === Usuario ? (
 
                     <div className='d-flex'>
                         <button className="btn" onClick={() => handleDelete(DataLugar)}>

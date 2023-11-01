@@ -13,20 +13,17 @@ import Constantes from "../../utils/Constantes"
 import Swal from 'sweetalert2';
 import EditPerfil from "../components/editPerfil";
 
-
-
-
 const Perfil = () => {
     const token = localStorage.getItem("token");
     const [DataEvento, setDataEvento] = useState([]);
+    const [DataEventoLIke, setDataEventoLike] = useState([]);
     const [DataLugar, setDataLugar] = useState([]);
-
+    const [DataLugarLike, setDataLugarLike] = useState([]);
     const [Datauser, setDatauser] = useState([]);
-    const usuario = localStorage.getItem("username")
-
+    const Usuario = localStorage.getItem("username")
 
     const handleOneUser = async () => {
-        const endPoin = `${Constantes.URL_BASE}/usuarios/findusername/${usuario}`;
+        const endPoin = `${Constantes.URL_BASE}/usuarios/findusername/${Usuario}`;
 
         await axios.get(endPoin, {
             headers: { Authorization: `bearer ${token}` },
@@ -46,9 +43,6 @@ const Perfil = () => {
                 }
             });
     };
-
-    
-
     //consumo para ver los eventos creados por el usuario
     async function handleEvento() {
 
@@ -59,9 +53,7 @@ const Perfil = () => {
             headers: { Authorization: `bearer ${token}` },
         })
             .then((resp) => {
-                setDataEvento(resp.data.result.filter(elemento => elemento.usuario === usuario));
-                console.log(DataEvento)
-
+                setDataEvento(resp.data.result.filter(elemento => elemento.usuario === Usuario));
             })
             .catch((err) => {
                 console.log(err);
@@ -74,21 +66,15 @@ const Perfil = () => {
                 }
             });
     }
-   
-
     //consumo para ver los lugares creados por el usuario
 
     async function handleLugar() {
-
-
         const endPoin = Constantes.URL_BASE + '/lugares/listlugares';
-
         await axios.get(endPoin, {
             headers: { Authorization: `bearer ${token}` },
         })
             .then((resp) => {
-                setDataLugar(resp.data.result.filter(elemento => elemento.usuario === usuario));
-                console.log(DataLugar)
+                setDataLugar(resp.data.result.filter(elemento => elemento.usuario === Usuario));
 
             })
             .catch((err) => {
@@ -102,17 +88,36 @@ const Perfil = () => {
                 }
             });
     }
+
+    async function handleLugarlike() {
+        const endPoin = Constantes.URL_BASE + '/lugares/listlugaresLike';
+        await axios.get(endPoin, {
+            headers: { Authorization: `bearer ${token}` },
+        })
+            .then((resp) => {
+                setDataEventoLike(resp.data.result);
+                console.log(DataEventoLIke)
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.response.status == 400) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else if (err.response.status == 401) {
+                    Swal.fire("Información!", err.response.data.message, "error");
+                } else {
+                    Swal.fire("Información!", "Ocurrio un error!", "error");
+                }
+            });
+    }
+
+
+    
     useEffect(() => {
         handleEvento();
         handleOneUser();
-
         handleLugar();
-    },[]);
-
-
-
-
-
+        handleLugarlike();
+    }, []);
     return (
         <div className="contGeneral">
             <Header />
@@ -121,33 +126,23 @@ const Perfil = () => {
                 <div className="encabezado-perfil">
                     <div>
                         <img src={Datauser.foto} alt="Foto de perfil" />
-                       
-                       
-                       
-                       
                         <EditPerfil />
-
                     </div>
-
-
-
                     <div className="descrip-pefil">
                         <div className="nombre">
                             <h6 className="nombre-perfil"> Nombre: {Datauser.nombres}</h6>
-                            <h6 className="usuario-perfil">Usuario: {usuario}</h6>
-
+                            <h6 className="usuario-perfil">Usuario: {Usuario}</h6>
                         </div>
                         <h6 className="usuario-perfil">Email: {Datauser.email}</h6>
-
                         <div className="nombre">
                             <h6 className="usuario-perfil">Eventos creados: {DataEvento.length}</h6>
 
-                            <h6 className="usuario-perfil">Eventos guardados: {DataEvento.length}</h6>
+                            <h6 className="usuario-perfil">Eventos guardados: {DataEventoLIke.length}</h6>
                         </div>
                         <div className="nombre">
 
                             <h6 className="usuario-perfil">Lugares creados: {DataLugar.length}</h6>
-                            <h6 className="usuario-perfil">Lugares guardados: {DataLugar.length}</h6>
+                            <h6 className="usuario-perfil">Lugares guardados: {DataLugarLike.length}</h6>
                         </div>
                     </div>
                 </div>
@@ -176,12 +171,18 @@ const Perfil = () => {
                                 </div>
                             )}
                         </Tab>
-
-
                         <Tab eventKey="evento favoritos" title="Eventos favoritos">
-                            <h4>Estos son tus eventos favoritos</h4>
+                            {DataEvento.length > 0 ? (
+                                <div>
+                                    <h4>Estos son tus eventos favoritos</h4>
+                                    <VerEvento eventos={DataEvento} />
+                                </div>
+                            ) : (
+                                <div>
+                                    <h4>NO tienes eventos favoritos</h4>
+                                </div>
+                            )}
                         </Tab>
-
                         <Tab eventKey="lugar creado" title="Lugares Creados">
                             {DataLugar.length > 0 ? (
                                 <div>
@@ -194,9 +195,18 @@ const Perfil = () => {
                                 </div>
                             )}
                         </Tab>
-                        <Tab eventKey="lugar favoritos" title="Lugares favoritos">
-                            <h4>Estos tus lugares favoritos</h4>
 
+                        <Tab eventKey="lugar favoritos" title="Lugares favoritos">
+                            {DataLugarLike.length > 0 ? (
+                                <div>
+                                    <h4>Estos son tus lugares favoritos</h4>
+                                    <Lugares lugaresData={DataLugarLike} />
+                                </div>
+                            ) : (
+                                <div>
+                                    <h4>NO tienes eventos favoritos</h4>
+                                </div>
+                            )}
                         </Tab>
                     </Tabs>
                 </div>

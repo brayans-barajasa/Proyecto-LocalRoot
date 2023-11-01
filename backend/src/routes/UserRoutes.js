@@ -11,6 +11,7 @@ api.get("/usuarios/listarUser/:sort", UsersController.findAll);
 api.get("/usuarios/findbyidUser/:usuario", UsersController.findById);
 api.get("/usuarios/findusername/:username", UsersController.findOneUsuario);
 api.delete("/usuarios/deleteUser/:id", UsersController.deleteUserData);
+api.put("/usuarios/updateUserPassword/:usuario", UsersController.updateUserDataPassword);
 api.put("/usuarios/updateUser/:usuario", UsersController.updateUserData);
 
 
@@ -25,7 +26,9 @@ api.put("/eventos/updateEvento/:id", EventosController.updateEventoData);
 
 // Routes para crear lugares
 api.post("/lugares/createLugares", LugaresController.create);
+api.post("/lugares/createLugareLike", LugaresController.Createlugarlike);
 api.get("/lugares/listlugares", LugaresController.findAll);
+api.get("/lugares/listlugaresLike/:usuario", LugaresController.findAlllike);
 api.get("/lugares/findbyidlugares/:id", LugaresController.findById);
 api.get("/lugares/findLugaresname/:userlugar", LugaresController.findOneLugares);
 api.delete("/lugares/deletelugares/:id", LugaresController.deleteLugarData);

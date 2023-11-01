@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -10,6 +10,8 @@ import "../styles/perfil.css";
 function editPerfil() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   
+  const [nombres, setnombres] = useState("");
+  const [email, setemail] = useState("");
   const [foto, setfoto] = useState("");
   
 
@@ -21,14 +23,43 @@ function editPerfil() {
     setShowPasswordModal(false);
   };
   const usuario = localStorage.getItem("username")
+  useEffect(() => {
+    if (usuario) {
+      handleOneUsuario();
+    }
+  }, [usuario]);
+  const handleOneUsuario = () => {
+    const endPoint = `${Constantes.URL_BASE}/usuarios/findusername/${usuario}`;
 
-  const handleSavefoto = () => {
-    if (foto ===  "") {
-      Swal.fire('Error', 'Por favor, ingresa el link de la foto.', 'error');
+    axios
+      .get(endPoint)
+      .then((resp) => {
+        const UsuarioData = resp.data.result;
+        console.log(UsuarioData)
+        setnombres(UsuarioData.nombres);
+        setemail(UsuarioData.email);
+        setfoto(UsuarioData.foto);
+        
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.response && (err.response.status === 400 || err.response.status === 401)) {
+          Swal.fire("Información!", err.response.data.message, "error");
+        } else {
+          Swal.fire("Información!", "Ocurrió un error!", "error");
+        }
+      });
+  };
+
+  const handleEditPerfil = () => {
+    if (nombres ==="",email==="", foto ===  "") {
+      Swal.fire('Error', 'Por favor, ingresa todos lso datos.', 'error');
     } else {
       const endPoint = `${Constantes.URL_BASE}/usuarios/updateUser/${usuario}`;
 
       const Data = {
+        nombres:nombres,
+        email:email,
         usuario: usuario,
         foto: foto,
       };
@@ -67,6 +98,24 @@ function editPerfil() {
         <Modal.Body>
           
           <Form.Group className="mb-3">
+            <Form.Label>Ingreas el nombre del usuario</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="nombre"
+              value={nombres}
+              onChange={(e) => setnombres(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Ingreas el email</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="email"
+              value={email}
+              onChange={(e) => setemail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>Ingreas el link de la foto</Form.Label>
             <Form.Control
               type="text"
@@ -74,10 +123,14 @@ function editPerfil() {
               value={foto}
               onChange={(e) => setfoto(e.target.value)}
             />
+          <img id="image-preview" src={foto} alt="Vista previa" style={{ maxWidth: "50%" }} />
+
           </Form.Group>
+
+
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSavefoto}>
+          <Button variant="primary" onClick={handleEditPerfil}>
             Cambiar Contraseña
           </Button>
           <Button variant="secondary" onClick={handleCloseFotoModal}>

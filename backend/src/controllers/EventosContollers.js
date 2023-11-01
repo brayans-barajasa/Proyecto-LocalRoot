@@ -1,4 +1,5 @@
 const eventoModel = require("../models/EventosModels");
+
 const {
   CreateEvento,
   FindAllEvento,
@@ -79,6 +80,7 @@ async function updateEventoData(req, res) {
   const response = await updateEvento(id, evento);
   res.status(response.status).send(response);
 }
+
 
 module.exports = {
   create,

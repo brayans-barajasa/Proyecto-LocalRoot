@@ -1,4 +1,6 @@
 const LugaresoModel = require("../models/LugaresModels");
+const LikeModel = require("../models/LikeLugaresModels");
+
 const {
   CreateLugar,
   FindAllLugar,
@@ -6,6 +8,8 @@ const {
   FindOneLugarname,
   deleteLugar,
   updateLugar,
+  CreateLugarLike,
+  FindAllLugarLike
 } = require("../repository/LugaresRepositoty");
 
 async function create(req, res) {
@@ -72,6 +76,31 @@ async function updateLugarData(req, res) {
   res.status(response.status).send(response);
 }
 
+async function Createlugarlike(req, res) {
+  const params = req.body;
+
+  const like = new LikeModel();
+
+  like.Usuario = params.Usuario;
+  like.idLugares = params.idLugares;
+  const response = await CreateLugarLike(like);
+  res.status(response.status).send(response);
+}
+
+
+async function findAlllike(req, res) {
+  const usuario = req.params["usuario"];
+
+
+  const response = await FindAllLugarLike(usuario);
+  res.status(response.status).send(response);
+}
+
+
+
+
+
+
 module.exports = {
   create,
   findAll,
@@ -79,4 +108,7 @@ module.exports = {
   findOneLugares,
   deleteLugarData,
   updateLugarData,
+  Createlugarlike,
+  findAlllike,
+
 };
