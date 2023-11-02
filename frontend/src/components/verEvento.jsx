@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import "../styles/Eventos.css"
 const VerEventos = ({ eventos }) => {
   const eventosReverso = eventos.slice().reverse();
 

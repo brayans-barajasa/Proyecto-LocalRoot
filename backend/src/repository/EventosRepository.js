@@ -79,8 +79,6 @@ module.exports.FindOneEvento = async (id) => {
   });
 };
 
-
-
 module.exports.deleteEvento = async (id) => {
   return new Promise((resolve, reject) => {
     eventoModel.findByIdAndDelete(id)

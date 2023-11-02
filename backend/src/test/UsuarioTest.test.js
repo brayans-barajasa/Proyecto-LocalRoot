@@ -39,8 +39,4 @@ describe("Test Users repository", () => {
     expect(response).toBe(returnUsers);
   });
 
-
-
-
-
 });
