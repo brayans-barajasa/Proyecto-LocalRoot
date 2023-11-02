@@ -13,6 +13,10 @@ async function create(req, res) {
   const params = req.body;
   const user = new UserModel();
 
+  if (params.TipoUsuario == "" || params.TipoUsuario == undefined) {
+    res.status(400).send({ message: "campo de categoria requerido es Requerido" });
+    return;
+  }
   if (params.nombres == "" || params.nombres == undefined) {
     res.status(400).send({ message: "El nombre es Requerido" });
     return;
@@ -59,6 +63,7 @@ async function create(req, res) {
   //Encriptar
   bcrypt.hash(params.password, null, null, async function (err, hash) {
     if (hash) {
+      user.TipoUsuario = params.TipoUsuario;
       user.nombres = params.nombres;
       user.email = params.email;
       user.usuario = params.usuario;

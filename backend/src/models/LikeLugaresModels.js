@@ -4,7 +4,6 @@ const schema = mongoose.Schema;
 const LikeLugaresModels = schema({
     idLugares: {type: schema.ObjectId, ref:"Lugares_collection"},
     Usuario: String
-    
 });
 
 

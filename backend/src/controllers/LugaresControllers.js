@@ -1,15 +1,16 @@
 const LugaresoModel = require("../models/LugaresModels");
-const LikeModel = require("../models/LikeLugaresModels");
+const LikeModelLugares = require("../models/LikeLugaresModels");
 
 const {
   CreateLugar,
   FindAllLugar,
   FindOneLugar,
-  FindOneLugarname,
+  FindAllLugarcreados,
   deleteLugar,
+  deleteLugarLike,
   updateLugar,
   CreateLugarLike,
-  FindAllLugarLike
+  FindAllLugarLike,
 } = require("../repository/LugaresRepositoty");
 
 async function create(req, res) {
@@ -39,22 +40,31 @@ async function findAll(req, res) {
   const response = await FindAllLugar(query);
   res.status(response.status).send(response);
 }
+async function findAllcreados(req, res) {
+  const Usuario = req.params["Usuario"];
+  const response = await FindAllLugarcreados(Usuario);
+  res.status(response.status).send(response);
+}
 
+async function findAlllike(req, res) {
+  const usuario = req.params["usuario"];
+  const query = { Usuario: usuario };
+  const response = await FindAllLugarLike(query);
+  res.status(response.status).send(response);
+}
 async function findById(req, res) {
   const id = req.params["id"];
   const response = await FindOneLugar(id);
   res.status(response.status).send(response);
 }
-
-async function findOneLugares(req, res) {
-  const lugar = req.params["userlugar"];
-  const response = await FindOneLugarname(lugar);
-  res.status(response.status).send(response);
-}
-
 async function deleteLugarData(req, res) {
   const id = req.params["id"];
   const response = await deleteLugar(id);
+  res.status(response.status).send(response);
+}
+async function deleteLugarDataLike(req, res) {
+  const id = req.params["id"];
+  const response = await deleteLugarLike(id);
   res.status(response.status).send(response);
 }
 
@@ -79,7 +89,7 @@ async function updateLugarData(req, res) {
 async function Createlugarlike(req, res) {
   const params = req.body;
 
-  const like = new LikeModel();
+  const like = new LikeModelLugares();
 
   like.Usuario = params.Usuario;
   like.idLugares = params.idLugares;
@@ -88,27 +98,15 @@ async function Createlugarlike(req, res) {
 }
 
 
-async function findAlllike(req, res) {
-  const usuario = req.params["usuario"];
-
-
-  const response = await FindAllLugarLike(usuario);
-  res.status(response.status).send(response);
-}
-
-
-
-
-
 
 module.exports = {
   create,
   findAll,
   findById,
-  findOneLugares,
   deleteLugarData,
+  deleteLugarDataLike,
   updateLugarData,
   Createlugarlike,
   findAlllike,
-
+  findAllcreados,
 };

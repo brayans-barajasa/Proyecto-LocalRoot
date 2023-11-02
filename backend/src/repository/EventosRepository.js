@@ -1,5 +1,6 @@
 const { Response } = require("../utils/Response");
 const eventoModel = require("../models/EventosModels");
+const eventoModelLIke = require("../models/LikeEventosModels");
 
 module.exports.CreateEvento = async (user) => {
   return new Promise((resolve, reject) => {
@@ -8,6 +9,25 @@ module.exports.CreateEvento = async (user) => {
       .then((resp) => {
         Response.status = 201;
         Response.message = "Se ha creado el evento Correctamente";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+module.exports.CreateEventoLike = async (like) => {
+  return new Promise((resolve, reject) => {
+    like
+      .save()
+      .then((resp) => {
+        Response.status = 201;
+        Response.message = "Se ha agregado lugar a favoritos Correctamente";
         Response.result = resp;
         resolve(Response);
       })
@@ -59,24 +79,7 @@ module.exports.FindOneEvento = async (id) => {
   });
 };
 
-module.exports.FindOneEventoname = async (usuario) => {
-  return new Promise((resolve, reject) => {
-    eventoModel.findOne({ usuario: usuario })
-      .then((resp) => {
-        Response.status = 200;
-        Response.message = "Registros Encontrados";
-        Response.result = resp;
-        resolve(Response);
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        Response.status = 400;
-        Response.message = "Ocurrio un error en el servidor";
-        Response.result = err;
-        reject(Response);
-      });
-  });
-};
+
 
 module.exports.deleteEvento = async (id) => {
   return new Promise((resolve, reject) => {
@@ -129,3 +132,44 @@ module.exports.updateEvento = async (id, evento) => {
   });
 };
 
+
+module.exports.FindAllEventoscreados = async (Usuario) => {
+  return new Promise((resolve, reject) => {
+    eventoModel.find({usuario: Usuario })
+
+      .then((resp) => {
+        Response.status = 200;
+        Response.message = "Registros lugares creados  Encontrados";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 400;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+
+module.exports.FindAllEventosLike = async (query) => {
+  return new Promise((resolve, reject) => {
+    eventoModelLIke.find(query)
+      .populate({path:"idEventos"})
+      .then((resp) => {
+        const eventosGuardados = resp.map((like) => like.idEventos);
+        Response.status = 200;
+        Response.message = "Registros lugares guardados  Encontrados";
+        Response.result = eventosGuardados;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};

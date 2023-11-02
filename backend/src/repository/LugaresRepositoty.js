@@ -1,6 +1,6 @@
 const { Response } = require("../utils/Response");
-const UserModel = require("../models/LugaresModels");
-const UserModelLike = require("../models/LikeLugaresModels");
+const LugarModel = require("../models/LugaresModels");
+const LugarModelLike = require("../models/LikeLugaresModels");
 
 module.exports.CreateLugar = async (user) => {
   return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ module.exports.CreateLugar = async (user) => {
 
 module.exports.FindAllLugar = async (sort) => {
   return new Promise((resolve, reject) => {
-    UserModel.find()
+    LugarModel.find()
       .sort(sort)
       .then((resp) => {
         Response.status = 200;
@@ -41,47 +41,13 @@ module.exports.FindAllLugar = async (sort) => {
       });
   });
 };
-module.exports.FindOneLugar = async (id) => {
-  return new Promise((resolve, reject) => {
-    UserModel.findById({ _id: id })
-      .then((resp) => {
-        Response.status = 200;
-        Response.message = "Registros del evento encontrados";
-        Response.result = resp;
-        resolve(Response);
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        Response.status = 500;
-        Response.message = "Ocurrio un error en el servidor";
-        Response.result = err;
-        reject(Response);
-      });
-  });
-};
 
-module.exports.FindOneLugarname = async (usuario) => {
-  return new Promise((resolve, reject) => {
-    UserModel.findOne({ usuario: usuario })
-      .then((resp) => {
-        Response.status = 200;
-        Response.message = "Registros Encontrados";
-        Response.result = resp;
-        resolve(Response);
-      })
-      .catch((err) => {
-        console.log("error:", err);
-        Response.status = 400;
-        Response.message = "Ocurrio un error en el servidor";
-        Response.result = err;
-        reject(Response);
-      });
-  });
-};
+
+
 
 module.exports.deleteLugar = async (id) => {
   return new Promise((resolve, reject) => {
-    UserModel.findByIdAndDelete(id)
+    LugarModel.findByIdAndDelete(id)
       .then((resp) => {
         Response.status = 200;
         Response.message = "Registro Eliminado correctamente";
@@ -97,10 +63,28 @@ module.exports.deleteLugar = async (id) => {
       });
   });
 };
+module.exports.deleteLugarLike = async (id) => {
+  return new Promise((resolve, reject) => {
+    LugarModelLike.findByIdAndDelete(id)
+      .then((resp) => {
+        Response.status = 200;
+        Response.message = "Registro Eliminado de guardados correctamente";
+        Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 500;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
 
 module.exports.updateLugar = async (id, lugar) => {
   return new Promise((resolve, reject) => {
-    UserModel.findOneAndUpdate(
+    LugarModel.findOneAndUpdate(
       { _id: id },
       {
         nombreLugar: lugar.nombreLugar,
@@ -129,7 +113,6 @@ module.exports.updateLugar = async (id, lugar) => {
   });
 };
 
-
 module.exports.CreateLugarLike = async (like) => {
   return new Promise((resolve, reject) => {
     like
@@ -149,14 +132,12 @@ module.exports.CreateLugarLike = async (like) => {
       });
   });
 };
-
-module.exports.FindAllLugarLike = async (sort) => {
+module.exports.FindOneLugar = async (id) => {
   return new Promise((resolve, reject) => {
-    UserModelLike.find()
-      .sort(sort)
+    LugarModel.findById({ _id: id })
       .then((resp) => {
         Response.status = 200;
-        Response.message = "Registros de los eventos Encontrados";
+        Response.message = "Registros del evento encontrados";
         Response.result = resp;
         resolve(Response);
       })
@@ -170,16 +151,35 @@ module.exports.FindAllLugarLike = async (sort) => {
   });
 };
 
-
-module.exports.FindAllLugarLike = async (sort) => {
+module.exports.FindAllLugarcreados = async (Usuario) => {
   return new Promise((resolve, reject) => {
-    UserModelLike.find()
-      .sort(sort)
-      .populate({path:"idLugares"})
+    LugarModel.find({usuario: Usuario })
+
       .then((resp) => {
         Response.status = 200;
-        Response.message = "Registros de los eventos Encontrados";
+        Response.message = "Registros lugares creados  Encontrados";
         Response.result = resp;
+        resolve(Response);
+      })
+      .catch((err) => {
+        console.log("error:", err);
+        Response.status = 400;
+        Response.message = "Ocurrio un error en el servidor";
+        Response.result = err;
+        reject(Response);
+      });
+  });
+};
+
+module.exports.FindAllLugarLike = async (query) => {
+  return new Promise((resolve, reject) => {
+    LugarModelLike.find(query)
+      .populate({path:"idLugares"})
+      .then((resp) => {
+        const lugaresGuardados = resp.map((like) => like.idLugares);
+        Response.status = 200;
+        Response.message = "Registros lugares guardados  Encontrados";
+        Response.result = lugaresGuardados;
         resolve(Response);
       })
       .catch((err) => {

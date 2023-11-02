@@ -74,11 +74,7 @@ const InfoLugares = () => {
         });
     }
 
-
-
-
-
-    const Likelugares = async (e) => {
+    const handleLikelugares = async (e) => {
         const datosLugar = {
             Usuario: Usuario,
             idLugares: id,
@@ -102,7 +98,36 @@ const InfoLugares = () => {
                 }
             });
     };
-
+    const handleDeleteLike = () => {
+        Swal.fire({
+            title: `¿Está seguro de Eliminar este lugar de favoritos <strong>${DataLugar.nombreLugar}</strong>?!`,
+            showCancelButton: true,
+            confirmButtonText: "Si",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                //Accion en caso de que elijan el SI 
+                const endPoint = `${Constantes.URL_BASE}/lugares/deletelugareslike/${id}`;
+                await axios.delete(endPoint, {
+                    headers: { Authorization: `bearer ${token}` },
+                })
+                    .then((resp) => {
+                        Swal.fire("Información!", resp.data.message, "success");
+                        handleOneLugar();
+                        
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        if (err.response.status === 400) {
+                            Swal.fire("Información!", err.response.data.message, "error");
+                        } else if (err.response.status === 401) {
+                            Swal.fire("Información!", err.response.data.message, "error");
+                        } else {
+                            Swal.fire("Información!", "Ocurrió un error!", "error");
+                        }
+                    });
+            }
+        });
+    }
 
 
     return (
@@ -163,7 +188,7 @@ const InfoLugares = () => {
                         <p key={index}>{parrafo}</p>
                     ))}
                 </div>
-                <button onClick={Likelugares}>  Guardar en Favoritos</button>
+                <button onClick={handleLikelugares}>  Guardar en Favoritos</button>
                         
                 {DataLugar.usuario === Usuario ? (
 

@@ -17,10 +17,14 @@ api.put("/usuarios/updateUser/:usuario", UsersController.updateUserData);
 
 // Routes para crear eventos
 api.post("/eventos/createEvento", EventosController.create);
+api.post("/eventos/createEventoLike", EventosController.CreateEventolike);
 api.get("/eventos/listEvento", EventosController.findAll);
 api.get("/eventos/findbyidEvento/:id", EventosController.findById);
-api.get("/eventos/findEventoname/:userevento", EventosController.findOneEvento);
+api.get("/eventos/listEventoscreados/:Usuario", EventosController.findAllcreados);
+api.get("/eventos/listEventosLike/:usuario", EventosController.findAlllike);
 api.delete("/eventos/deleteEvento/:id", EventosController.deleteEventoData);
+// api.delete("/lugares/deletelugareslike/:id", LugaresController.deleteLugarDataLike);
+
 api.put("/eventos/updateEvento/:id", EventosController.updateEventoData);
 
 
@@ -28,9 +32,11 @@ api.put("/eventos/updateEvento/:id", EventosController.updateEventoData);
 api.post("/lugares/createLugares", LugaresController.create);
 api.post("/lugares/createLugareLike", LugaresController.Createlugarlike);
 api.get("/lugares/listlugares", LugaresController.findAll);
-api.get("/lugares/listlugaresLike/:usuario", LugaresController.findAlllike);
 api.get("/lugares/findbyidlugares/:id", LugaresController.findById);
-api.get("/lugares/findLugaresname/:userlugar", LugaresController.findOneLugares);
+api.get("/lugares/listlugarescreados/:Usuario", LugaresController.findAllcreados);
+api.get("/lugares/listlugaresLike/:usuario", LugaresController.findAlllike);
+
 api.delete("/lugares/deletelugares/:id", LugaresController.deleteLugarData);
+api.delete("/lugares/deletelugareslike/:id", LugaresController.deleteLugarDataLike);
 api.put("/lugares/updateLugares/:id", LugaresController.updateLugarData);
 module.exports = api;

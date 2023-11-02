@@ -10,6 +10,7 @@ import '../styles/Login.css';
 
 function Login() {
     const navigate = useNavigate();
+    const [TipoUsuario, setTipoUsuario] = useState('');
     const [nombres, setNombres] = useState('');
     const [usuario, setUsuario] = useState('');
     const [email, setEmail] = useState('');
@@ -69,6 +70,7 @@ function Login() {
         const endPoint = Constantes.URL_BASE + '/usuarios/createUser';
 
         const data = {
+            TipoUsuario: TipoUsuario,
             nombres: nombres,
             usuario: usuario,
             email: email,
@@ -94,7 +96,9 @@ function Login() {
             });
     };
 
-
+    const handleTipoUsuarioChange = (event) => {
+        setTipoUsuario(event.target.value);
+    };
 
     return (
         <div className="container">
@@ -194,6 +198,42 @@ function Login() {
                             Mostrar Contraseña
                         </label>
                     </div>
+
+
+
+
+                    <div>
+                            <label> Tipo de Usuario:</label>
+                        <div>
+
+                            <label>
+                                Cliente
+                                <input
+                                    type="radio"
+                                    value="cliente"
+                                    checked={TipoUsuario === 'cliente'}
+                                    onChange={handleTipoUsuarioChange}
+                                />
+                            </label>
+                            <label>
+                                Administrador
+                                <input
+                                    type="radio"
+                                    value="administrador"
+                                    checked={TipoUsuario === 'administrador'}
+                                    onChange={handleTipoUsuarioChange}
+                                />
+                            </label>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
                     <div className="form-check d-flex justify-content-center mb-4">
                         <input className="form-check-input" type="checkbox" id="flexCheckDefault" />
                         <label className="form-check-label" htmlFor="flexCheckDefault">

@@ -1,12 +1,16 @@
 const eventoModel = require("../models/EventosModels");
-
+const LikeModelEventos = require("../models/LikeEventosModels");
+ 
 const {
   CreateEvento,
+  CreateEventoLike,
   FindAllEvento,
   FindOneEvento,
   FindOneEventoname,
   deleteEvento,
   updateEvento,
+  FindAllEventoscreados,
+  FindAllEventosLike
 } = require("../repository/EventosRepository");
 
 async function create(req, res) {
@@ -46,6 +50,17 @@ async function findById(req, res) {
   const response = await FindOneEvento(id);
   res.status(response.status).send(response);
 }
+async function findAllcreados(req, res) {
+  const Usuario = req.params["Usuario"];
+  const response = await FindAllEventoscreados(Usuario);
+  res.status(response.status).send(response);
+}
+async function findAlllike(req, res) {
+  const usuario = req.params["usuario"];
+  const query = { Usuario: usuario };
+  const response = await FindAllEventosLike(query);
+  res.status(response.status).send(response);
+}
 
 async function findOneEvento(req, res) {
   const evento = req.params["userevento"];
@@ -81,11 +96,24 @@ async function updateEventoData(req, res) {
   res.status(response.status).send(response);
 }
 
+async function CreateEventolike(req, res) {
+  const params = req.body;
+
+  const like = new LikeModelEventos();
+
+  like.Usuario = params.Usuario;
+  like.idEventos = params.idEventos;
+  const response = await CreateEventoLike(like);
+  res.status(response.status).send(response);
+}
 
 module.exports = {
   create,
+  CreateEventolike,
   findAll,
   findById,
+  findAllcreados,
+  findAlllike,
   findOneEvento,
   deleteEventoData,
   updateEventoData,

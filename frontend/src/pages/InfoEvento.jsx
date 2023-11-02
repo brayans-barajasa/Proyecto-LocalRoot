@@ -16,7 +16,6 @@ const InfoEvento = () => {
     const [DataEvento, setDataEvento] = useState([]);
     const usuario = localStorage.getItem("username")
 
-
     const handleOneEvento = async () => {
         const endPoin = `${Constantes.URL_BASE}/eventos/findbyidEvento/${id}`;
 
@@ -75,7 +74,30 @@ const InfoEvento = () => {
         });
     }
 
+    const handleLikeEventos = async (e) => {
+        const datosEventos = {
+            Usuario: usuario,
+            idEventos: id,
 
+        };
+
+        const endPoint = `${Constantes.URL_BASE}/eventos/createEventoLike`;
+
+        axios
+            .post(endPoint, datosEventos)
+            .then((resp) => {
+                console.log(resp);
+                Swal.fire("Información", "Lugar guardado en favorito", "success");
+            })
+            .catch((error) => {
+                console.error(error);
+                if (error.response && (error.response.status === 400 || error.response.status === 404)) {
+                    Swal.fire("Error", error.response.data.message, "error");
+                } else {
+                    Swal.fire("Error", "Ocurrió un error", "error");
+                }
+            });
+    };
     return (
         <div className='contGeneral'>
             <Header />
@@ -122,6 +144,8 @@ const InfoEvento = () => {
                         <p key={index}>{parrafo}</p>
                     ))}
                 </div>
+                <button onClick={handleLikeEventos}>  Guardar en Favoritos</button>
+
 
                 {DataEvento.usuario === usuario ? (
 

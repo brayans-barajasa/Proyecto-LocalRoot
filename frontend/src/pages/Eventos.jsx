@@ -9,16 +9,17 @@ import "../styles/Eventos.css";
 const Eventos = () => {
   const token = localStorage.getItem("token");
   const [DataEvento, setDataEvento] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [eventosFiltrados, setEventosFiltrados] = useState([]);
   const [noResultados, setNoResultados] = useState(false);
 
   const obtenerEventos = async () => {
-    const endPoint = Constantes.URL_BASE + '/eventos/listEvento';
+    const endPoint = Constantes.URL_BASE + "/eventos/listEvento";
 
-    await axios.get(endPoint, {
-      headers: { Authorization: `bearer ${token}` },
-    })
+    await axios
+      .get(endPoint, {
+        headers: { Authorization: `bearer ${token}` },
+      })
       .then((resp) => {
         setDataEvento(resp.data.result);
       })
@@ -63,14 +64,28 @@ const Eventos = () => {
 
       <div className="Contenedor">
         <div className="hacer">
-          <h2 className="elementor-heading-title elementor-size-default">¿QUÉ HACER HOY?</h2>
-          <p>Encuentra actividades entretenidas para hacer en Medellín, como eventos locales y festivales, actuaciones y exposiciones de arte. Aquí te mostramos qué hacer para que puedas planificar tu visita por la ciudad y que la vivas de la mejor manera.&nbsp;</p>
+          <h2 className="elementor-heading-title elementor-size-default">
+            ¿QUÉ HACER HOY?
+          </h2>
+          <p>
+            Encuentra actividades entretenidas para hacer en Medellín, como
+            eventos locales y festivales, actuaciones y exposiciones de arte.
+            Aquí te mostramos qué hacer para que puedas planificar tu visita por
+            la ciudad y que la vivas de la mejor manera.&nbsp;
+          </p>
         </div>
 
-        
         <nav className="navbar navbar-expand-lg bg-body-terciary">
           <div className="container-fluid">
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarScroll"
+              aria-controls="navbarScroll"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarScroll">
@@ -87,14 +102,31 @@ const Eventos = () => {
                   Buscar
                 </button>
               </form>
-              <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{ '--bs-scroll-height': '100px' }}>
+              <ul
+                className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+                style={{ "--bs-scroll-height": "100px" }}
+              >
                 <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Lista
                   </a>
                   <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Mes</a></li>
-                    <li><a className="dropdown-item" href="#">Día</a></li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Mes
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Día
+                      </a>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -102,13 +134,15 @@ const Eventos = () => {
           </div>
         </nav>
         {noResultados ? (
-          <p className="no-resultados-mensaje">No hay eventos que coincidan con la búsqueda.</p>
+          <p className="no-resultados-mensaje">
+            No hay eventos que coincidan con la búsqueda.
+          </p>
         ) : (
           <VerEventos eventos={search.length ? eventosFiltrados : DataEvento} />
         )}
       </div>
 
-      <Footer />  
+      <Footer />
     </div>
   );
 };
